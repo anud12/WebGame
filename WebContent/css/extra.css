@@ -1,0 +1,77 @@
+		body
+		{
+			font-family: 'Roboto Mono', monospace;
+			font-family: 'Open Sans';
+			letter-spacing:0px;
+			color:black;
+			margin:0px;
+			overflow:hidden;
+			
+			height:100%;
+			font-size:11px;
+		}
+		
+		
+		item
+		{
+			display:inline;
+		}
+		item > content
+		{
+			display:none;
+			position:absolute;
+		}
+		item:hover > content
+		{
+			display:block;
+		}
+		
+		.label
+		{
+			display:inline-flex;
+		}
+
+		attribute-list
+		{
+			display:table;
+			width:100%;
+		}
+		attribute
+		{
+			display:table-row;
+		}
+		
+		attribute > *
+		{
+			display:table-cell;
+			padding:5px;
+		}
+		name
+		{
+			color: darkcyan;
+			cursor: pointer;
+			
+		}
+		name:hover
+		{
+
+		}
+		replymessage
+		{
+			text-align:right;
+			display:block;
+		}
+		sendmessage
+		{
+			
+			display:block;
+		}
+		controls
+		{
+			display:table-row;
+		}
+		controls > *
+		{
+			display:table-cell;
+
+		}

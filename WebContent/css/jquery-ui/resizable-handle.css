@@ -1,0 +1,35 @@
+.ui-resizable-handle
+{
+	position: absolute;
+	z-index:0;
+}
+
+.ui-resizable-s
+{
+    bottom:0px;
+    height: 4px;
+    left:0px;
+    width: calc(100% - 8px);
+    cursor: s-resize;
+}
+
+.ui-resizable-e
+{
+    
+    top:0px;
+    height: calc(100% - 8px);
+    right:-2px;
+    width:4px;
+    cursor: e-resize;
+}
+.ui-resizable-se
+{
+    bottom: 0px;
+    height: 0px;
+    right: 0px;
+    width: 0px;
+    background:none;
+    cursor: nw-resize;
+    border-top: 15px solid transparent;
+	border-right: 15px solid rgb(240,240,240);
+}

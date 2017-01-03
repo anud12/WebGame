@@ -1,0 +1,34 @@
+button
+{
+	transition-duration:0.3s;
+	border:1px solid;
+	border-color: transparent;
+	padding:5px 10px 5px 10px;
+	background-color:white;
+	margin:0px;
+	outline:0px;
+	width:100%;
+	cursor:pointer;
+}
+button:hover
+{
+	border-color: rgb(220,220,220);
+	background-color:rgb(250,250,250);
+}
+
+
+button:focus
+{
+	border-color: rgb(180,180,180);
+}
+
+button:active
+{
+	background-color:rgb(240,240,240);
+}
+
+button.mobile
+{
+	width:100%;
+	display:block;
+}

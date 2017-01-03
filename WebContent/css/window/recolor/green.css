@@ -1,0 +1,42 @@
+window-frame.focus.green
+{
+	border-color:rgba(46,125,50,1);
+	box-shadow: 0px 0px 5px 1px rgba(46,125,50,0.36);
+}
+
+window-frame.green > window-title
+{
+	color:rgba(46,125,50,1);
+}
+
+window-frame.unfocus.green > window-title:hover
+{
+	background-color:rgba(46,125,50,0.2);
+}
+
+window-frame.focus.green > window-title
+{
+	background-color:rgba(46,125,50,1);
+	color:white;
+}
+
+panel > button.visible.green
+{
+	border-color:rgba(46,125,50,1);
+}
+
+panel > button.focus.green
+{
+	background-color:rgba(46,125,50,1);
+	color:white;
+}
+
+panel > button.focus.green:hover
+{
+	background-color:rgba(46,125,50,1);
+}
+
+panel > button:hover.green
+{
+	background-color:rgba(46,125,50,0.2);
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+<hibernate-mapping>
+    <class name="persistence.table.entity.World" >
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <bag name="shipList" table="world_ship">
+        	<key column="id_world"></key>
+        	<many-to-many class="persistence.table.entity.Ship" column="id_ship"/>
+        </bag> 
+    </class>
+</hibernate-mapping>

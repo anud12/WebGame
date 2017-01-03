@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean class="game.Loop" id="Loop" scope="singleton" init-method="init" >
+    	<property name="minimumDeltaTime">
+    		<value>1500</value>
+    	</property>
+    	<property name="context">
+    		<ref bean="Context"></ref>
+    	</property>
+    </bean>
+    <bean class="game.GameContext" id="Context" scope="singleton" init-method="init">
+    </bean>
+</beans>

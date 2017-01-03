@@ -1,0 +1,82 @@
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Cousine" rel="stylesheet">
+	<link href="css/jquery-ui/jquery-ui.css" rel="stylesheet">
+	<link href="css/jquery-ui/progressbar.css" rel="stylesheet">
+	<link href="css/button.css" rel="stylesheet">
+	<link href="css/window/window.css" rel="stylesheet">
+	<link href="css/window/recolor/red.css" rel="stylesheet">
+	<link href="css/window/recolor/blue.css" rel="stylesheet">
+	<link href="css/window/recolor/green.css" rel="stylesheet">
+	<link href="css/window/resizable-handle.css" rel="stylesheet">
+	<link href="css/sidemenu.css" rel="stylesheet">
+	<link href="css/desktop.css" rel="stylesheet">
+	<link href="css/context-menu.css" rel="stylesheet">
+	<link href="css/font.css" rel="stylesheet">
+	
+	<style>
+		body
+		{
+			margin:0px;
+			background: lightgray;
+			font-family: "Open Sans";
+			font-size:12px;
+			overflow:hidden;
+		}
+		button
+		{
+			font-family: inherit;
+		}
+	</style>
+	<title>Index</title>
+</head>
+
+<body>
+	<script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+	<script src="jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="javascript/desktopJS/window.js"></script>
+	<script src="javascript/ajax/test.js"></script>
+	<script src="jquery.ui.touch-punch.min.js"></script>
+	<script>
+	var serverResponse;
+	var controls;
+	var div;
+	$(function()
+	{			
+		serverResponse =  windowManager.newWindow("Server Response");
+		controls = windowManager.newWindow("Controls");
+		windowManager.newWindow("Something", "green");
+		windowManager.newWindow("Ahaa", "blue");
+		var red = windowManager.newWindow("Long window name please", "red");
+		
+		div = $("<div id='progress'></div>").progressbar({value:32});
+		red.find("content").append(div);
+		
+		ajax.init(serverResponse.find("content"));
+		
+		
+		
+		var button = $("<button>Echo</button>").click(ajax.ajaxTest);
+		
+		controls.find("content").append(button);
+		
+		button = $("<button>Ping</button>").click(ajax.ping)
+		controls.find("content").append(button);
+		//var chat =  newWindow("Chat").find("content").append($("attribute-list"))
+		//chat.find("menu-bar").append("<button>Options</button>");
+		//chat.find("content").append($("chat"));
+		
+		$(".ui-resizable-handle").removeAttr("style");
+		
+		
+	});
+	</script>
+	<sidemenu>
+		
+	</sidemenu>
+	<desktop>
+	
+	</desktop>
+</body>

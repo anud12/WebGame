@@ -1,0 +1,46 @@
+window-controls
+{
+	
+	position:absolute;
+	top:0px;
+	right:0px;
+
+	padding:0px;
+	height:25px;
+	font-size:18px;
+	border:0px;
+	color:inherit;
+}
+window-controls > *
+{
+	transition-duration:0.2s;
+	background-color:transparent;
+	height:100%;
+    border: 0px;
+    line-height: 24px;
+    padding: 0px;
+    margin: 0px;
+    width:25px;
+    
+}
+window-frame.focus > window-controls > *
+{
+	color:black;
+}
+
+window-frame.focus > window-controls > button:hover
+{
+	color:black;
+	background-color:white;
+}
+window-frame.focus > *
+{
+	color:white;
+}
+
+
+window-frame.unfocus > window-controls:hover > *
+{
+	//color:white;
+	//background-color:red;
+}

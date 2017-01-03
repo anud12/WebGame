@@ -1,0 +1,52 @@
+ship-container
+{
+	display:block;
+}
+
+ship-container ul
+{
+	margin:0px 10px -1px 10px;
+	padding:5px;
+}
+
+ship-cntainer ul:last-child
+{
+	margin-bottom:0px;
+}
+
+ship-container p.title
+{
+	padding:5px 5px 5px 10px;
+}
+
+ship-container p.category-title
+{
+	text-align: center;
+	padding:0px 0px 0px 5px;
+}
+
+ship-container li
+{
+	width: 100%;
+	display: inline-table;
+	border: 0px solid lightgray;
+	border-width: 0px 0px 1px 0px;
+	position: relative;
+}
+
+ship-container li:last-child
+{
+	border:0px;
+}
+ship-container label
+{
+	display:inline-block;
+	width: 49%;
+	text-align: left;
+}
+ship-container p.value
+{
+	display:inline-block;
+	width: 49%;
+	text-align: right;
+}

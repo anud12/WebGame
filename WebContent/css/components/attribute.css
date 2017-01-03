@@ -1,0 +1,17 @@
+attribute
+{
+	display:block;
+	padding:4px;
+}
+
+attribute > label
+{
+	display : block;
+	text-align:center;
+}
+
+attribute > .value
+{
+	display : block;
+	text-align:center;
+}

@@ -1,0 +1,31 @@
+window-title
+{
+	transition-duration: 0.2s;
+	display:block;
+	position:absolute;
+	padding:3px;
+	width:calc(100% - 6px);
+	height:20px;
+	top:0px;
+
+	font-size:12px;
+	line-height:20px;
+	background-color:white;
+	color:gray;
+	border-bottom:1px solid lightgray;
+}
+window-frame.unfocus > window-title:hover
+{
+	background-color:lightgray;
+}
+
+window-frame.ui-draggable-dragging > window-title
+{
+}
+
+window-frame.focus > window-title
+{
+	background-color:gray;
+	color:white;
+	border-bottom-color:transparent;
+}

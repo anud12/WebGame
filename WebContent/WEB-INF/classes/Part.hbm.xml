@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+<hibernate-mapping>
+    <class name="persistence.table.entity.Part">
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name" type="string"/>
+        <property name="type" column="type" type="string"/>
+        
+        <joined-subclass name= "persistence.table.entity.PartGenerator" table="PART_GENERATOR">
+	       	<key column ="id"></key>
+	       	<property name="Rate" type="double"></property>
+        </joined-subclass>
+        
+        <joined-subclass name= "persistence.table.entity.PartStorage" table="PART_STORAGE">
+	       	<key column ="id"></key>
+	       	<property name="area" type="double"></property>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

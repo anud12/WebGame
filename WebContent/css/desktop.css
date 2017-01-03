@@ -1,0 +1,27 @@
+desktopv1
+{
+    background-image:url(http://www.sevenforums.com/attachments/tutorials/173429d1314981906-desktop-background-change-img0.jpg);
+    background-position: center center;
+    background-size: cover;
+    
+    background-color:lightgray;
+    position:relative;
+    display:block;
+    margin: 0px 0px 0px 75px;
+    height:100%;
+    width:calc(100% - 75px);
+    overflow:hidden;
+}
+desktop
+{
+	position:relative;
+	
+	//background-image: url(http://www.sevenforums.com/attachments/tutorials/173429d1314981906-desktop-background-change-img0.jpg);
+    background-position: center center;
+    background-size: cover;
+    background-color: rgb(245,245,245);
+    
+    height:100%;
+    flex-grow: 1;
+    overflow: hidden;
+}

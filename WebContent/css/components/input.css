@@ -1,0 +1,44 @@
+input[type="textfield"]
+{
+	transition-duration:0.2s;
+	display:block;
+	padding:5px;
+	
+	border: solid lightgray;
+	border-width:0px 0px 1px 0px;
+	outline: 0px;
+	width:100%;
+	
+	text-align:center;
+}
+input[type="password"]
+{
+	transition-duration:0.2s;
+	display:block;
+	padding:5px;
+	
+	border: solid lightgray;
+	border-width:0px 0px 1px 0px;
+	outline: 0px;
+	width:100%;
+	
+	text-align:center;
+}
+
+input[type="textfield"]::-webkit-input-placeholder
+{
+	text-align:center;
+}
+
+input[type="textfield"]:focus
+{
+	border: solid blue;
+	border-width:0px 0px 1px 0px;
+	width:100%;
+}
+input[type="password"]:focus
+{
+	border: solid blue;
+	border-width:0px 0px 1px 0px;
+	width:100%;
+}

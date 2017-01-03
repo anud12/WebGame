@@ -1,0 +1,56 @@
+panel {
+	background-color: white;
+	border-color: lightgray;
+	border-style: solid;
+	border-width:0px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: inline-block;
+}
+
+panel>button {
+	transition-duration: 0.2s;
+	background-color: inherit;
+	
+	border-right: 0px solid;
+	border-bottom: 0px solid;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	border-color:transparent;
+}
+
+
+panel>button.visible {
+	border-color: gray;
+}
+
+panel>button.focus {
+	background-color: gray;
+	color: white;
+}
+
+panel>button.focus:hover {
+	background-color: gray;
+}
+
+panel>button:hover {
+	background-color: rgba(125, 125, 125, 0.1);
+	background-color: lightgray;
+}
+
+panel-container.left > panel>button
+{
+	border-right-width: 3.5px;
+	display: block;
+	width: 100%;
+	padding: 10px 0px 10px 0px;
+}
+
+panel-container.bottom > panel>button
+{
+	display: inline;
+	height:100%;
+	padding: 10px 10px 10px 10px;
+	width:auto;
+	border-top-width : 3.5px;
+}
