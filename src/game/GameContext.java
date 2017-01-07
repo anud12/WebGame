@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-
+import game.collection.GameDataContainer;
 import persistence.Persistence;
 import persistence.table.entity.Ship;
 import persistence.table.entity.Tables;
@@ -18,56 +18,53 @@ import test.game.ShipUpdate;
 
 public class GameContext
 {
-	protected HashMap<Integer, FrameIteration> map;
+	protected HashMap<Object, FrameIteration> commands;
 	protected ExecutorService executor;
+	protected GameDataContainer dataContainer;
 	
-	public HashMap<Integer, FrameIteration> getMap()
+	public HashMap<Object, FrameIteration> getCommands()
 	{
-		return map;
+		return commands;
 	}
 
-	public void setMap(HashMap<Integer, FrameIteration> map)
+	public void setCommands(HashMap<Object, FrameIteration> map)
 	{
-		this.map = map;
+		this.commands = map;
+	}
+	
+	
+	public GameDataContainer getDataContainer()
+	{
+		return dataContainer;
 	}
 
-
+	public void setDataContainer(GameDataContainer dataContainer)
+	{
+		this.dataContainer = dataContainer;
+	}
 
 	public GameContext()
 	{
-		map = new HashMap<Integer, FrameIteration>();
+		commands = new HashMap<Object, FrameIteration>();
 		executor = Executors.newCachedThreadPool();
 	}
 
-	
-	
 	public void init()
 	{
-		Persistence persistence = (Persistence) Spring.getPersistence().getBean("Persistence");
 		
-		Iterator<Ship> shipIterator = Tables.getShips().values().iterator();
-		
-		while(shipIterator.hasNext())
-		{
-			Ship ship = shipIterator.next();
-			
-			ShipUpdate action = new ShipUpdate(ship.getId());
-			
-			map.put(ship.getId(), action);
-		}
 	}
 	
 	public void update(double deltaTime)
 	{
-		Iterator<Integer> iterator = map.keySet().iterator();
+		Iterator<Object> iterator = commands.keySet().iterator();
 		
 		List<Future<FrameIteration>> frame = new ArrayList<Future<FrameIteration>>();
 		
 		while(iterator.hasNext())
 		{
-			Integer integer = iterator.next();
+			Object key = iterator.next();
 			
-			FrameIteration frameIteration = map.get(integer);
+			FrameIteration frameIteration = commands.get(key);
 			
 			frameIteration.setDeltaTime(deltaTime);
 			
@@ -81,7 +78,7 @@ public class GameContext
 			
 			try
 			{
-				future.get().commit();
+				future.get();
 			}
 			catch (InterruptedException | ExecutionException e)
 			{
@@ -89,5 +86,6 @@ public class GameContext
 				e.printStackTrace();
 			}
  		}
+		dataContainer.swap();
 	}
 }

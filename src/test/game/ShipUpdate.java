@@ -1,8 +1,13 @@
 package test.game;
 
+import java.util.Set;
+
 import org.hibernate.Session;
 
 import game.FrameIteration;
+import game.collection.BufferedHashMap;
+import game.collection.GameDataContainer;
+import game.collection.ShipCollection;
 import persistence.Persistence;
 import persistence.table.entity.Ship;
 import spring.Spring;
@@ -11,11 +16,12 @@ public class ShipUpdate implements FrameIteration
 {
 	protected int id;
 	protected double deltaTime;
-	protected Session dbSession;
+	protected ShipCollection shipCollection;
 	
-	public ShipUpdate(int id)
+	public ShipUpdate(int id, ShipCollection gameDataContainer)
 	{
 		this.id = id;
+		this.shipCollection = gameDataContainer;
 	}
 	
 	@Override
@@ -25,21 +31,13 @@ public class ShipUpdate implements FrameIteration
 	}
 	
 	@Override
-	public void commit()
-	{
-		dbSession.close();
-	}
-
-	@Override
 	public Object call() throws Exception
 	{
-		Persistence persistence = (Persistence) Spring.getPersistence().getBean("Persistence");
+		BufferedHashMap<Integer, Object> shipMap = shipCollection;
+				
+		Ship ship = (Ship) shipMap.get(id);
 		
-		dbSession = persistence.getSessionFactory().openSession();
-		
-		dbSession.beginTransaction();
-		
-		Ship ship = (Ship) dbSession.createQuery("from Ship u where u.id = '" + id + "'").getSingleResult();
+		ship.calculateProperties();
 		
 		//Ship ship = (Ship) Tables.getShips().get(id);
 		
@@ -54,8 +52,7 @@ public class ShipUpdate implements FrameIteration
 		
 		ship.setValue (increment);
 		
-		dbSession.update(ship);
-		dbSession.getTransaction().commit();
+		shipMap.put(ship.getId(), ship);
 		
 		System.out.println("Incremented " + newIncrement + " Area : " + ship.getArea());
 		return this;

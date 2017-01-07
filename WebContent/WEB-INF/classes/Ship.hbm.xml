@@ -4,8 +4,8 @@
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
 <hibernate-mapping>
     <class name="persistence.table.entity.Ship" >
+    
         <id name="id" type="int" column="id">
-            <generator class="native"/>
         </id>
         
         <property name="name" column="name" type="string"/>
@@ -15,9 +15,9 @@
         <property name="x" column="x" type="double"/>
         <property name="y" column="y" type="double"/>
         
-        <bag name="partList" table="ship_part">
-        	<key column="id_ship"></key>
-        	<many-to-many class="persistence.table.entity.Part" column="id_part"/>
+        <bag name="partList" table="ship_part" lazy="false">
+        	<key column="id_ship" ></key>
+        	<many-to-many  class="persistence.table.entity.Part" column="id_part" />
         </bag> 
     </class>
 </hibernate-mapping>

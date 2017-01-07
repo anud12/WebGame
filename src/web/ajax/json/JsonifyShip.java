@@ -53,6 +53,7 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		JSONArray specificationArray = new JSONArray();
 
 		//Values
+		ship.calculateProperties();
 		JSONObject specificationValue = new JSONObject();
 		specificationValue.put("name", "Area");
 		specificationValue.put("value", ship.getArea());

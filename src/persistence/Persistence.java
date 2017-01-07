@@ -8,29 +8,21 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-
+import game.collection.GameDataContainer;
 import persistence.table.entity.Ship;
 import persistence.table.entity.Tables;
 import persistence.table.entity.User;
 import persistence.table.entity.World;
+import spring.Spring;
 import persistence.table.entity.Part;
 import persistence.table.entity.PartGenerator;
 import persistence.table.entity.PartStorage;
 
 public class Persistence
 {
-	protected Session session;
 	protected SessionFactory sessionFactory;
+	protected GameDataContainer dataContainer;
 	
-	public Session getSession()
-	{
-		return session;
-	}
-	public void setSession(Session session)
-	{
-		this.session = session;
-	}
-
 	
 	public SessionFactory getSessionFactory()
 	{
@@ -41,7 +33,35 @@ public class Persistence
 		this.sessionFactory = sessionFactory;
 	}
 	
-	
+	public GameDataContainer getDataContainer()
+	{
+		return dataContainer;
+	}
+	public void setDataContainer(GameDataContainer dataContainer)
+	{
+		this.dataContainer = dataContainer;
+		
+		System.out.println("Persistence :" + dataContainer);
+		Session session = sessionFactory.openSession();
+		Iterator<Ship> shipIterator = session.createQuery("from Ship").getResultList().iterator();
+		while(shipIterator.hasNext())
+		{
+			Ship ship = shipIterator.next();
+			dataContainer.get("Ship").put(ship.getId(), ship);
+		}
+		session.close();
+		
+		dataContainer.get("Ship").swap();
+		
+		session = sessionFactory.openSession();
+		shipIterator = session.createQuery("from Ship").getResultList().iterator();
+		while(shipIterator.hasNext())
+		{
+			Ship ship = shipIterator.next();
+			dataContainer.get("Ship").put(ship.getId(), ship);
+		}
+		session.close();
+	}
 	
 	public Persistence()
 	{
@@ -59,7 +79,7 @@ public class Persistence
 			StandardServiceRegistryBuilder.destroy(registry);
 		}
 		
-		session = sessionFactory.openSession();
+		Session session = sessionFactory.openSession();
 		
 		Iterator<User> userIterator = session.createQuery("from User").getResultList().iterator();
 		while(userIterator.hasNext())
@@ -73,6 +93,7 @@ public class Persistence
 		{
 			Ship ship = shipIterator.next();
 			Tables.getShips().put(ship.getId(), ship);
+			
 		}
 		
 		
@@ -145,11 +166,13 @@ public class Persistence
 			System.out.println("Area :" + part.getArea());
 		}
 		
+		session.close();
 		user.setIncrement(++increment);
+		session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.update(user);
 		
-		session.getTransaction().commit();
+		session.close();
 		System.out.println(this.toString() + " constructor finished");
 	}
 }

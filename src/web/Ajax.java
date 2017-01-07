@@ -2,6 +2,7 @@ package web;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,17 +15,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import game.Loop;
-import persistence.Persistence;
-import persistence.table.entity.User;
 import spring.Spring;
-import web.ajax.AjaxAction;
+import web.ajax.ControllerMap;
+import web.ajax.controller.Controller;
 import web.ajax.json.JsonifyUser;
 
 @WebServlet(urlPatterns = "/Ajax")
-public class Ajax extends HttpServlet {
+public class Ajax extends HttpServlet 
+{
 	private static final long serialVersionUID = 1L;
-       
+	private ControllerMap controllerMap;       
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -33,6 +33,10 @@ public class Ajax extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    public void init()
+    {
+    	controllerMap = (ControllerMap) Spring.getAjax().getBean("ControllerMap"); 
+    }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -45,35 +49,39 @@ public class Ajax extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings({ "unchecked" })
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		try
 		{
 			JSONParser parser = new JSONParser();
-			JSONArray array = (JSONArray) parser.parse(request.getReader());
+			JSONArray recievedJSON = (JSONArray) parser.parse(request.getReader());
 			
 			JSONObject returnObject = new JSONObject();
 			
-			System.out.println(array);
+			System.out.println(recievedJSON);
 			
-			Iterator<JSONObject> iterator = array.iterator();
+			Iterator<JSONObject> iterator = recievedJSON.iterator();
+			
 			while(iterator.hasNext())
 			{
-				JSONObject object = iterator.next();
+				JSONObject JSONParameters = iterator.next();
 				
-				String actionName = (String) object.keySet().iterator().next(); 
-				System.out.println(actionName);
-				if(Spring.getAjax().containsBean(actionName))
+				JSONObject controllerResponse = new JSONObject();
+				
+				Map<String, Object> parametersMap = (Map<String, Object>)JSONParameters;
+				
+				String controllerName = (String) parametersMap.keySet().iterator().next(); 
+				
+				if(controllerMap.containsKey(controllerName))
 				{
-					System.out.println("TRUE");
-					AjaxAction action = (AjaxAction) Spring.getAjax().getBean(actionName);
+					Controller controller = controllerMap.get(controllerName);
+					Map<String,Object> parameters = (Map<String, Object>) parametersMap.get(controllerName);
 					
-					JSONObject actionMessage = action.action(request.getSession(), object);
-					JSONObject actionObject = new JSONObject();
+					JSONObject actionReturn = controller.action(request.getSession(), parameters);
 					
-					actionObject.put(actionName, actionMessage);
-					
-					returnObject.put("actionName" ,actionObject);
+					controllerResponse.put(controllerName, actionReturn);
+					returnObject.put("actionName" ,controllerResponse);
 				}
 			}
 			

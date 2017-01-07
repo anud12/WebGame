@@ -3,7 +3,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean class="game.Loop" id="Loop" scope="singleton" init-method="init" >
+    <bean class="game.Loop" id="Loop" scope="singleton" init-method="init">
     	<property name="minimumDeltaTime">
     		<value>1500</value>
     	</property>
@@ -11,6 +11,24 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
     		<ref bean="Context"></ref>
     	</property>
     </bean>
+    
     <bean class="game.GameContext" id="Context" scope="singleton" init-method="init">
+	    <property name="dataContainer">
+	    	<ref bean="DataContainer"/>
+	    </property>
+    </bean>
+    
+    <bean class="game.collection.GameDataContainer" id="DataContainer" scope="singleton">
+     	<constructor-arg>
+     	 	<ref bean="Context"/>
+     	</constructor-arg>
+     	<property name="persistence">
+     		<ref bean="Persistence"/>
+     	</property>
+    </bean>
+    
+    
+    <bean id="Persistence" class="persistence.Persistence" scope="singleton" depends-on="DataContainer">
+    	<property name="dataContainer" ref="DataContainer"></property>
     </bean>
 </beans>

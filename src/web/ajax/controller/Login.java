@@ -1,32 +1,26 @@
-package web.ajax;
+package web.ajax.controller;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Session;
 import org.json.simple.JSONObject;
 
-import game.Loop;
 import persistence.Persistence;
 import persistence.table.entity.Tables;
 import persistence.table.entity.User;
 import spring.Spring;
 
-public class Login implements AjaxAction
+public class Login implements Controller
 {
-	public JSONObject action(HttpSession session, JSONObject object)
+	@SuppressWarnings("unchecked")
+	public JSONObject action(HttpSession session, Map<String, Object> object)
 	{
-		JSONObject loginObject = (JSONObject) object.values().iterator().next();
-		String username = (String) loginObject.get("username");
-		String password = (String) loginObject.get("password");
-		
-		System.out.println(username + " | " + password);
-		
+		String username = (String) object.get("username");
+		String password = (String) object.get("password");
+				
 		JSONObject returnObject = new JSONObject();
 		
 		Persistence persistence = (Persistence) Spring.getPersistence().getBean("Persistence");
@@ -49,7 +43,6 @@ public class Login implements AjaxAction
 					
 					returnObject.put("username", username);
 					returnObject.put("increment", user.getIncrement());
-					System.out.println("Logged in as" + username);
 					break;
 				}
 			}

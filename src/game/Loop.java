@@ -7,7 +7,7 @@ public class Loop implements Runnable
     protected long time;
     protected double deltaTime;
     protected double minimumDeltaTime;
-    
+    protected boolean run;
     //Context
     
 	private GameContext context;
@@ -16,85 +16,22 @@ public class Loop implements Runnable
   	
 	public Loop()
 	{
-		
+		run = true;
 	}
 	
-	
-	
-	public synchronized long getTime()
-	{
-		return time;
-	}
-
-
-
-	public synchronized void setTime(long time)
-	{
-		this.time = time;
-	}
-
-
-
-	public synchronized double getDeltaTime()
-	{
-		return deltaTime;
-	}
-
-
-
-	public synchronized void setDeltaTime(double deltaTime)
-	{
-		this.deltaTime = deltaTime;
-	}
-
-
-
-	public synchronized double getMinimumDeltaTime()
-	{
-		return minimumDeltaTime;
-	}
-
-
-
-	public synchronized void setMinimumDeltaTime(double minimumDeltaTime)
-	{
-		this.minimumDeltaTime = minimumDeltaTime;
-	}
-
-
-
-	public synchronized boolean isPause()
-	{
-		return isPause;
-	}
-
-
-
-	public synchronized void setPause(boolean isPause)
-	{
-		this.isPause = isPause;
-	}
-	
-	
-	
-	public GameContext getContext()
-	{
-		return context;
-	}
-
-
-
-	public void setContext(GameContext context)
-	{
-		this.context = context;
-	}
-
-
-
 	public void init()
 	{
 		Thread thread = new Thread(this);
 		thread.start();
+	}
+	
+	@Override
+	public void run()
+	{
+		while(run)
+		{
+			update();
+		}
 	}
 	
 	protected synchronized void update()
@@ -143,16 +80,68 @@ public class Loop implements Runnable
     	
     	context.update(deltaTime);
 	}
-
-
-
-	@Override
-	public void run()
+	
+	
+	
+	
+	public synchronized long getTime()
 	{
-		while(true)
-		{
-			update();
-		}
+		return time;
+	}
+
+	public synchronized void setTime(long time)
+	{
+		this.time = time;
+	}
+
+	public synchronized double getDeltaTime()
+	{
+		return deltaTime;
+	}
+
+	public synchronized void setDeltaTime(double deltaTime)
+	{
+		this.deltaTime = deltaTime;
+	}
+
+	public synchronized double getMinimumDeltaTime()
+	{
+		return minimumDeltaTime;
+	}
+
+	public synchronized void setMinimumDeltaTime(double minimumDeltaTime)
+	{
+		this.minimumDeltaTime = minimumDeltaTime;
+	}
+
+	public synchronized boolean isPause()
+	{
+		return isPause;
+	}
+
+	public synchronized void setPause(boolean isPause)
+	{
+		this.isPause = isPause;
+	}
+	
+	public GameContext getContext()
+	{
+		return context;
+	}
+
+	public void setContext(GameContext context)
+	{
+		this.context = context;
+	}
+
+	public boolean isRun()
+	{
+		return run;
+	}
+
+	public void setRun(boolean run)
+	{
+		this.run = run;
 	}
 	
 	

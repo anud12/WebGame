@@ -19,6 +19,28 @@ public class Ship
 	protected double rate;
 	protected double area;
 	
+	public void calculateProperties()
+	{
+		rate = 0;
+		area = 0;
+		Iterator<Part> iterator = partList.iterator();
+		while(iterator.hasNext())
+		{
+			Part part = iterator.next();
+			
+			if(part.getClass() == PartGenerator.class)
+			{
+				this.rate += ((PartGenerator) part).getRate();
+			}
+			if(part.getClass() == PartStorage.class)
+			{
+				this.area += ((PartStorage) part).area;
+			}
+			
+		}
+		
+	}
+	
 	public int getId()
 	{
 		return id;
@@ -64,6 +86,11 @@ public class Ship
 		return partList;
 	}
 	
+	public void setPartList(List<Part> partList)
+	{
+		this.partList = partList;
+	}
+
 	public double getX()
 	{
 		return x;
@@ -84,28 +111,7 @@ public class Ship
 		this.y = y;
 	}
 
-	public void setPartList(List<Part> partList)
-	{
-		this.partList = partList;
-		
-		Iterator<Part> iterator = this.partList.iterator();
-		while(iterator.hasNext())
-		{
-			Part part = iterator.next();
-			
-			if(part.getClass() == PartGenerator.class)
-			{
-				this.rate += ((PartGenerator) part).getRate();
-			}
-			if(part.getClass() == PartStorage.class)
-			{
-				this.area += ((PartStorage) part).area;
-			}
-			
-		}
-		
-	}
-
+	
 	public double getRate()
 	{
 		return rate;

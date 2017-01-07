@@ -1,4 +1,4 @@
-package game;
+package game.collection;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +18,36 @@ public class BufferedHashMap<T,V> implements Map<T,V>
 		writeMap = new HashMap<>();
 	}
 	
+	
+	
+	public HashMap<T, V> getReadMap()
+	{
+		return readMap;
+	}
+
+
+
+	public void setReadMap(HashMap<T, V> readMap)
+	{
+		this.readMap = readMap;
+	}
+
+
+
+	public HashMap<T, V> getWriteMap()
+	{
+		return writeMap;
+	}
+
+
+
+	public void setWriteMap(HashMap<T, V> writeMap)
+	{
+		this.writeMap = writeMap;
+	}
+
+
+
 	public void swap()
 	{
 		HashMap<T,V> aux = readMap;

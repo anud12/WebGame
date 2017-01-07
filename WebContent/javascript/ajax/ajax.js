@@ -2,7 +2,7 @@ var ajax =
 {
 	init : function()
 	{
-		var rate = 100;
+		var rate = 1500;
 		ajax.url = "http://192.168.0.10:8080/HelloWorld/Ajax";
 		ajax.method = "POST";
 		ajax.ping = 0;
