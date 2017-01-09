@@ -13,7 +13,7 @@ import persistence.table.entity.Tables;
 import persistence.table.entity.User;
 import spring.Spring;
 
-public class Login implements Controller
+public class Login implements RequestController
 {
 	@SuppressWarnings("unchecked")
 	public JSONObject action(HttpSession session, Map<String, Object> object)

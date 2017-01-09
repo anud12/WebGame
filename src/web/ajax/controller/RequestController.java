@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
-public interface Controller 
+public interface RequestController 
 {
 	public JSONObject action(HttpSession session, Map<String, Object> object);
 }

@@ -56,6 +56,7 @@ public class GameContext
 	
 	public void update(double deltaTime)
 	{
+		System.out.println(this + " : Update");
 		Iterator<Object> iterator = commands.keySet().iterator();
 		
 		List<Future<FrameIteration>> frame = new ArrayList<Future<FrameIteration>>();

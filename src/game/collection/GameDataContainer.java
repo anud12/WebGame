@@ -29,7 +29,6 @@ public class GameDataContainer extends HashMap<String, BufferedHashMap<Integer, 
 	public void swap()
 	{
 		Iterator<BufferedHashMap<Integer, Object>> keyIterator = this.values().iterator();
-		System.out.println("Container : swap");
 		while(keyIterator.hasNext())
 		{
 			BufferedHashMap map = keyIterator.next();

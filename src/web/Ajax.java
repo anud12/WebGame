@@ -1,6 +1,8 @@
 package web;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import org.json.simple.parser.ParseException;
 
 import spring.Spring;
 import web.ajax.ControllerMap;
-import web.ajax.controller.Controller;
+import web.ajax.controller.RequestController;
 import web.ajax.json.JsonifyUser;
 
 @WebServlet(urlPatterns = "/Ajax")
@@ -75,7 +77,7 @@ public class Ajax extends HttpServlet
 				
 				if(controllerMap.containsKey(controllerName))
 				{
-					Controller controller = controllerMap.get(controllerName);
+					RequestController controller = controllerMap.get(controllerName);
 					Map<String,Object> parameters = (Map<String, Object>) parametersMap.get(controllerName);
 					
 					JSONObject actionReturn = controller.action(request.getSession(), parameters);
@@ -88,6 +90,7 @@ public class Ajax extends HttpServlet
 			JsonifyUser jsonify = (JsonifyUser) Spring.getAjax().getBean("JsonifyUser");
 			
 			returnObject.put("user", jsonify.marshal(request.getSession()));
+			returnObject.put("time", new Date().toGMTString());
 			
 			response.getWriter().write(returnObject.toString());
 			

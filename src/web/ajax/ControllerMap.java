@@ -2,10 +2,11 @@ package web.ajax;
 
 import java.util.HashMap;
 
-import web.ajax.controller.Controller;
+import web.ajax.controller.RequestController;
+import web.ajax.controller.Input;
 import web.ajax.controller.Login;
 
-public class ControllerMap extends HashMap<String, Controller>
+public class ControllerMap extends HashMap<String, RequestController>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -14,5 +15,6 @@ public class ControllerMap extends HashMap<String, Controller>
 		super();
 		
 		this.put("Login", new Login());
+		this.put("Input", new Input());
 	}
 }

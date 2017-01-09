@@ -16,7 +16,7 @@ public class Spring
 		persistence = new ClassPathXmlApplicationContext("persistence.spring.xml");
 		ajax = new ClassPathXmlApplicationContext("ajax.spring.xml");
 		
-		game = new ClassPathXmlApplicationContext("ajax.spring.xml");
+		game = persistence;
 		//game = new ClassPathXmlApplicationContext("game.spring.xml");
 	}
 

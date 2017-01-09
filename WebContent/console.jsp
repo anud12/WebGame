@@ -1,4 +1,6 @@
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
 	<link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
@@ -52,6 +54,17 @@
 		{
 			border:0.5px solid lightgray;
 		}
+		#ajaxResponse
+		{
+			margin-left:50%;
+			width:50%;
+			height:100%;
+			position:absolute;
+			top:0px;
+			overflow:overlay;
+			background-color:white;
+			padding:-1px;
+		}
 	</style>
 	<title>Index</title>
 </head>
@@ -78,13 +91,27 @@
 			console.log(typeof(data.message));
 			$("#ajaxResponse").append(JSON.stringify(JSON.parse(data.message), null, "  "));
 		});
+		
+		$("#testButton").click(function()
+		{
+			var returnValue = {};
+			returnValue["Input"] = {};
+			
+			returnValue["Input"]["name"] = "remove";
+			returnValue["Input"]["arguments"] = {};
+			returnValue["Input"]["arguments"]["amount"] = "100";
+			ajax.scheduleSend(returnValue, function(){});
+			console.log("Succesuffulllkdpok")
+		});
+		
 	})
 	</script>
 	
 	<div style = "position:absolute; width:50%; height:100%; top:0x; margin-right:50%;display:block;">
 		<div id="userPanel"></div>
+		<button id="testButton">Decrement by 100</button>
 	</div>
-	<div style = "margin-left:50%; width:50%; height:100%; position:absolute; top:0x;overflow:scroll; background-color:white">
-		<div id="ajaxResponse" style = "white-space: pre; font-family:'Cousine'; font-size:10px; line-height:8px"></div>
+	<div style = "">
+		<div id="ajaxResponse" style = "white-space: pre; font-family:'Cousine'; font-size:10px; line-height:9px"></div>
 	</div>
 </body>

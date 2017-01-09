@@ -19,6 +19,7 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		//ID
 		JSONObject shipIDObject = new JSONObject();
 		shipIDObject.put("name", ship.getName());
+		shipIDObject.put("id", ship.getId());
 		shipObject.put("identity", shipIDObject);
 		
 		//Values
@@ -54,6 +55,7 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 
 		//Values
 		ship.calculateProperties();
+		
 		JSONObject specificationValue = new JSONObject();
 		specificationValue.put("name", "Area");
 		specificationValue.put("value", ship.getArea());
