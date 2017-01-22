@@ -26,9 +26,11 @@ public class Input implements RequestController
 		ShipCollection collection = (ShipCollection) dataContainer.get("Ship");
 		
 		String name = (String) object.get("name");
+		int target = Integer.parseInt((String) object.get("target"));
 		Map<String, Object> arguments = (Map<String, Object>) object.get("arguments");
 		
-		collection.getControllers().get(2).add(name, arguments);
+		
+		collection.getControllers().get(target).add(name, arguments);
 		return returnObject;
 	}
 

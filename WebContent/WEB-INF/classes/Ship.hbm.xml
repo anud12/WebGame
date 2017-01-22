@@ -10,7 +10,7 @@
         
         <property name="name" column="name" type="string"/>
         <property  name="userId" column="id_user" type="int"/>
-        <property name="value" column="value" type="double"/>
+        <property name="energy" column="energy" type="long"/>
         
         <property name="x" column="x" type="double"/>
         <property name="y" column="y" type="double"/>

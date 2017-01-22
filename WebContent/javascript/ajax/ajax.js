@@ -87,7 +87,6 @@ var ajax =
 		})
 		.success(function(msg)
 		{
-			console.log(JSON.parse(msg));
 			ajax.sendBuffer = [];
 			
 			ajax.lastDate = (new Date()).getTime();

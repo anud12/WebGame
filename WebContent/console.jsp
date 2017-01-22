@@ -52,10 +52,11 @@
 		}
 		div
 		{
-			border:0.5px solid lightgray;
+			/*border:0.5px solid lightgray;*/
 		}
 		#ajaxResponse
 		{
+			
 			margin-left:50%;
 			width:50%;
 			height:100%;
@@ -64,7 +65,25 @@
 			overflow:overlay;
 			background-color:white;
 			padding:-1px;
+			position:fixed; right:0px; 
+			white-space: pre;
+			
+			font-family:monospace;
+			font-size:10px;
+			lineheight:9px;
+			
 		}
+		
+		#shipList, #shipContainers
+		{
+			width:calc(50% - 4px);
+			display:inline-table;
+			border:1px solid lightgray;
+		}
+		#shipContainers
+		{
+		}
+		
 	</style>
 	<title>Index</title>
 </head>
@@ -92,26 +111,40 @@
 			$("#ajaxResponse").append(JSON.stringify(JSON.parse(data.message), null, "  "));
 		});
 		
-		$("#testButton").click(function()
+		ShipManager.init($("#shipList"));
+		ShipManager.buildDom = function(ship, dom)
 		{
-			var returnValue = {};
-			returnValue["Input"] = {};
+			$("#shipContainers").html(dom);
+			console.log("click");
 			
-			returnValue["Input"]["name"] = "remove";
-			returnValue["Input"]["arguments"] = {};
-			returnValue["Input"]["arguments"]["amount"] = "100";
-			ajax.scheduleSend(returnValue, function(){});
-			console.log("Succesuffulllkdpok")
-		});
+			var actionButton = $("<button></button>");
+			actionButton.click(function()
+			{
+				var returnValue = {};
+				returnValue["Input"] = {};
+				
+				returnValue["Input"]["name"] = "remove";
+				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["arguments"] = {};
+				returnValue["Input"]["arguments"]["amount"] = "-2";
+				returnValue["Input"]["arguments"]["duration"] = "5000";
+				ajax.scheduleSend(returnValue, function(){});
+				console.log("Succesuffulllkdpok")
+			});
+			actionButton.text("Decrement " + ship.identity.name);
+			
+			dom.append(actionButton);
+		}
 		
 	})
 	</script>
 	
-	<div style = "position:absolute; width:50%; height:100%; top:0x; margin-right:50%;display:block;">
+	<div style = "overflow:overlay; position:fixed; width:50%; height:100%; top:0x; margin-right:50%;display:block; ">
 		<div id="userPanel"></div>
-		<button id="testButton">Decrement by 100</button>
+		<div id="shipList"></div>
+		<div id="shipContainers"></div>
 	</div>
 	<div style = "">
-		<div id="ajaxResponse" style = "white-space: pre; font-family:'Cousine'; font-size:10px; line-height:9px"></div>
+		<div id="ajaxResponse" style = ""></div>
 	</div>
 </body>

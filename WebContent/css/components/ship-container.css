@@ -3,15 +3,15 @@ ship-container
 	display:block;
 }
 
-ship-container ul
+ship-container .value-list
 {
 	margin:0px 10px -1px 10px;
-	padding:5px;
+	padding:0px;
 }
 
-ship-cntainer ul:last-child
+ship-container .value-list:last-of-type
 {
-	margin-bottom:0px;
+	margin:0px 10px 1px 10px;
 }
 
 ship-container p.title

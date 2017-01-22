@@ -5,8 +5,8 @@ public class Loop implements Runnable
 {
 	//Time measurements
     protected long time;
-    protected double deltaTime;
-    protected double minimumDeltaTime;
+    protected int deltaTime;
+    protected int minimumDeltaTime;
     protected boolean run;
     //Context
     
@@ -40,7 +40,7 @@ public class Loop implements Runnable
     	time = System.nanoTime();
     	
     	//Get the time between frames
-    	deltaTime = ( System.nanoTime() - time ) / 1000000.0f;
+    	deltaTime = (int) (( System.nanoTime() - time ) / 1000000);
     	System.out.println(this + " : Delta time " + deltaTime);
     	
     	//Check the frequency of the calls
@@ -75,7 +75,7 @@ public class Loop implements Runnable
     	}
     	else
     	{
-    		deltaTime = ( System.nanoTime() - time ) / 1000000.0f;
+    		deltaTime = (int) (( System.nanoTime() - time ) / 1000000);
     	}
     	
     	context.update(deltaTime);
@@ -99,7 +99,7 @@ public class Loop implements Runnable
 		return deltaTime;
 	}
 
-	public synchronized void setDeltaTime(double deltaTime)
+	public synchronized void setDeltaTime(int deltaTime)
 	{
 		this.deltaTime = deltaTime;
 	}
@@ -109,7 +109,7 @@ public class Loop implements Runnable
 		return minimumDeltaTime;
 	}
 
-	public synchronized void setMinimumDeltaTime(double minimumDeltaTime)
+	public synchronized void setMinimumDeltaTime(int minimumDeltaTime)
 	{
 		this.minimumDeltaTime = minimumDeltaTime;
 	}

@@ -37,7 +37,7 @@ var ShipManager =
 			isNew = true;
 		}
 		
-		ship = ShipManager.ships[arrayShip['identity']['name']];
+		var ship = ShipManager.ships[arrayShip['identity']['name']];
 		
 		keys = Object.keys(arrayShip);
 		
@@ -51,32 +51,34 @@ var ShipManager =
 		
 		if(isNew)
 		{
-			ShipManager.buildDom(ship);
+			container = ShipManager.container;
+			
+			button = $("<button class='ship'></button>");
+			button.text(ship['identity']['name']);
+			button.click(function()
+			{
+				var shipWindow = ShipManager.createShipDom(ship)
+				ship['window'] = shipWindow;
+				ShipManager.buildDom(ship, shipWindow);
+			});
+			container.append(button);
+			
+			ShipManager.createShipDom(ship);
 		}
 	},
 	
 	
-	buildDom(ship)
+	buildDom(ship, shipWindow)
 	{
-		container = ShipManager.container;
+		var window = windowManager.newWindow({windowName: ship['identity']['name'], closeable: true, height: 250, className: "green"});
+		window.content.append(shipWindow);
 		
-		button = $("<button class='ship'></button>");
-		button.text(ship['identity']['name']);
-		button.click(function()
-		{
-			ship['window'] = ShipManager.createWindow(ship);
-			console.log(ship);
-		});
-		container.append(button);
+		console.log(ship);
 	},
 	
-	
-	createWindow(ship)
+	createShipDom(ship)
 	{
-		shipWindow = windowManager.newWindow({windowName: ship['identity']['name'], closeable: true, height: 250, className: "green"});
-		
 		var shipContainer = $("<ship-container></ship-container");
-		shipWindow.content.append(shipContainer);
 		
 		var title = $("<p class = 'title'></p>");
 		title.text(ship['identity']['name']);
@@ -86,10 +88,10 @@ var ShipManager =
 		
 		var values = [];
 		
-		for(var categoryNumber = 0 ; categoryNumber < ship.values.length ; categoryNumber++)
+		for(var categoryNumber = 0 ; categoryNumber < ship.statistics.length ; categoryNumber++)
 		{
 			
-			category = ship['values'][categoryNumber];
+			category = ship['statistics'][categoryNumber];
 			var valueList = $("<ul class = 'value-list'></ul>")
 			shipContainer.append(valueList);
 			
@@ -103,7 +105,7 @@ var ShipManager =
 			
 			for(var valueNumber = 0 ; valueNumber < category['values'].length ; valueNumber++)
 			{
-				shipValue = ship['values'][categoryNumber]['values'][valueNumber];
+				shipValue = ship['statistics'][categoryNumber]['values'][valueNumber];
 				
 				var listObject = $("<li></li>");
 				valueList.append(listObject);
@@ -124,18 +126,18 @@ var ShipManager =
 		
 		ship.update = function()
 		{
-			console.log(values);
 			for(categoryNumber = 0 ; categoryNumber < values.length ; categoryNumber++)
 			{
 				for(valueNumber = 0 ; valueNumber < values[categoryNumber].length ; valueNumber++)
 				{
-					values[categoryNumber][valueNumber].text(ship['values'][categoryNumber]['values'][valueNumber]['value']);
+					values[categoryNumber][valueNumber].text(ship['statistics'][categoryNumber]['values'][valueNumber]['value']);
 				}
 			}
 			
 			
 			
 		}
-		return shipWindow;
+		ship.update();
+		return shipContainer;
 	}
 }

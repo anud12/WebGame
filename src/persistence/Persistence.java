@@ -120,7 +120,7 @@ public class Persistence
 				System.out.println("      ---Ship---");
 				System.out.println("      Id :" + ship.getId());
 				System.out.println("      Name :" + ship.getName());
-				System.out.println("      Value :" + ship.getValue());
+				System.out.println("      Value :" + ship.getEnergy());
 				System.out.println("      UserId :" + ship.getUserId());
 				Iterator<Part> shipPartIterator =  ship.getPartList().iterator();
 				while(shipPartIterator.hasNext())

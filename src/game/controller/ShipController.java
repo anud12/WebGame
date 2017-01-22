@@ -1,35 +1,41 @@
 package game.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import game.FrameIteration;
 import game.collection.BufferedHashMap;
 import game.collection.ShipCollection;
+import game.controller.action.IAction;
 import persistence.table.entity.Ship;
+import test.game.controller.TestAction;
 
 public class ShipController implements FrameIteration, ObjectController 
 {
 	protected int id;
-	protected double deltaTime = 0;
+	protected int deltaTimeMS = 0;
 	protected ShipCollection collection;
-	protected double substractAmount = 0;
+	protected Map<String,IAction> actions;
+		
 	
 	public ShipController(int shipId, ShipCollection collection)
 	{
 		this.id = shipId;
 		this.collection = collection;
+		this.actions = new HashMap<>();
+		
+		actions.put("remove", new TestAction());
 	}
 	@Override
 	public void add(String actionName, Map<String, Object> arguments)
 	{
-		
+		System.out.println(this + " : Add command, requrest");
 		if(actionName.equals("remove"))
 		{
-			double amount = Double.parseDouble((String) arguments.get("amount")) ;
-			
-			substractAmount = substractAmount + amount;
+			actions.get(actionName).addArguments(arguments);
+			System.out.println(this + " : Added test command, arg :" + arguments);
 		}
-		System.out.println(this + " : Added " + actionName + " with " + arguments + " substract is " + substractAmount);
+		
 	}
 
 	@Override
@@ -53,11 +59,10 @@ public class ShipController implements FrameIteration, ObjectController
 		Ship ship = (Ship) collection.get(id);
 		ship.calculateProperties();
 		
-		double increment = ship.getValue();
-		double newIncrement = increment + (ship.getRate() * (deltaTime/1000));
+		long increment = ship.getEnergy();
+		long newIncrement = (long) (increment + (ship.getRate() * deltaTimeMS));
 		
-		newIncrement = newIncrement - substractAmount;
-		substractAmount = 0;
+		System.out.println(this + " : DeltaTime " + deltaTimeMS + " newIncrement " + newIncrement + " rate " + ship.getRate());
 		
 		if(newIncrement < ship.getArea())
 		{
@@ -68,20 +73,32 @@ public class ShipController implements FrameIteration, ObjectController
 			increment = ship.getArea();
 		}
 		
-		ship.setValue (increment);
+		ship.setEnergy (increment);
+		
+		IAction<Ship> action = actions.get("remove");
+		do
+		{
+			action.setDeltaTimeMS(deltaTimeMS);
+			action.setTarget(ship);
+			action.call();
+			
+		}
+		while(false);
 		
 		
 		
-		System.out.println(this + " : Incremented " + ship.getId() +" at " + newIncrement + " Area : " + ship.getArea() + "Substracted " + substractAmount);
+		ship = action.getTarget();
+		
+		System.out.println(this + " : Incremented " + ship.getId() +" at " + newIncrement + " Area : " + ship.getArea());
 		
 		collection.put(ship.getId(), ship);
 		return this;
 	}
 
 	@Override
-	public void setDeltaTime(double deltaTime)
+	public void setDeltaTimeMS(int deltaTimeMS)
 	{
-		this.deltaTime = deltaTime;
+		this.deltaTimeMS = deltaTimeMS;
 	}
 
 }

@@ -22,9 +22,15 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		shipIDObject.put("id", ship.getId());
 		shipObject.put("identity", shipIDObject);
 		
+		//Location
+		JSONObject locationObject = new JSONObject();
+		shipObject.put("location", locationObject);
+		locationObject.put("x", ship.getX());
+		locationObject.put("y", ship.getY());
+		
 		//Values
 		JSONArray shipValuesArray = new JSONArray();
-		shipObject.put("values", shipValuesArray);
+		shipObject.put("statistics", shipValuesArray);
 		
 		//Status Category
 		
@@ -38,8 +44,8 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		//Values
 		JSONObject statusValue = new JSONObject();
 		
-		statusValue.put("name", "Value");
-		statusValue.put("value", String.format("%.2f", ship.getValue()));
+		statusValue.put("name", "Energy");
+		statusValue.put("value", ship.getEnergy()/1000.0f);
 		statusArray.add(statusValue);
 		
 		statusCategory.put("values", statusArray);
@@ -58,7 +64,7 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		
 		JSONObject specificationValue = new JSONObject();
 		specificationValue.put("name", "Area");
-		specificationValue.put("value", ship.getArea());
+		specificationValue.put("value", ship.getArea()/1000.0f);
 		specificationArray.add(specificationValue);
 		
 		specificationValue = new JSONObject();

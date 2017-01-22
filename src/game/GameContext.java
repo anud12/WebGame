@@ -10,11 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import game.collection.GameDataContainer;
-import persistence.Persistence;
-import persistence.table.entity.Ship;
-import persistence.table.entity.Tables;
-import spring.Spring;
-import test.game.ShipUpdate;
 
 public class GameContext
 {
@@ -54,7 +49,7 @@ public class GameContext
 		
 	}
 	
-	public void update(double deltaTime)
+	public void update(int deltaTimeMS)
 	{
 		System.out.println(this + " : Update");
 		Iterator<Object> iterator = commands.keySet().iterator();
@@ -67,7 +62,7 @@ public class GameContext
 			
 			FrameIteration frameIteration = commands.get(key);
 			
-			frameIteration.setDeltaTime(deltaTime);
+			frameIteration.setDeltaTimeMS(deltaTimeMS);
 			
 			frame.add(executor.submit(frameIteration));
 			

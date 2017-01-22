@@ -61,7 +61,7 @@ public class Ajax extends HttpServlet
 			
 			JSONObject returnObject = new JSONObject();
 			
-			System.out.println(recievedJSON);
+			System.out.println(this + " Recieved IP " + request.getRemoteAddr() + " json : " + recievedJSON);
 			
 			Iterator<JSONObject> iterator = recievedJSON.iterator();
 			

@@ -2,6 +2,9 @@ package persistence.table.entity;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import game.controller.action.IAction;
 
 public class Ship
 {
@@ -9,7 +12,7 @@ public class Ship
 	protected int id;
 	protected String name;
 	protected int userId;
-	protected double value;
+	protected long energy;
 	protected List<Part> partList;
 	
 	protected double x;
@@ -17,7 +20,8 @@ public class Ship
 	
 	//Calculated data
 	protected double rate;
-	protected double area;
+	protected long area;
+	
 	
 	public void calculateProperties()
 	{
@@ -71,14 +75,14 @@ public class Ship
 		this.userId = userId;
 	}
 
-	public double getValue()
+	public long getEnergy()
 	{
-		return value;
+		return energy;
 	}
 
-	public void setValue(double value)
+	public void setEnergy(long energy)
 	{
-		this.value = value;
+		this.energy = energy;
 	}
 
 	public List<Part> getPartList()
@@ -111,7 +115,6 @@ public class Ship
 		this.y = y;
 	}
 
-	
 	public double getRate()
 	{
 		return rate;
@@ -122,18 +125,14 @@ public class Ship
 		this.rate = rate;
 	}
 
-	public double getArea()
+	public long getArea()
 	{
 		return area;
 	}
 
-	public void setArea(double area)
+	public void setArea(long area)
 	{
 		this.area = area;
 	}
-	
-	
-
-	
 	
 }
