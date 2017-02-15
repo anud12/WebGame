@@ -124,6 +124,8 @@ var ShipManager =
 			}
 		}
 		
+		
+		
 		ship.update = function()
 		{
 			for(categoryNumber = 0 ; categoryNumber < values.length ; categoryNumber++)

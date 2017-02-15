@@ -129,9 +129,42 @@
 				returnValue["Input"]["arguments"]["amount"] = "-2";
 				returnValue["Input"]["arguments"]["duration"] = "5000";
 				ajax.scheduleSend(returnValue, function(){});
-				console.log("Succesuffulllkdpok")
 			});
 			actionButton.text("Decrement " + ship.identity.name);
+			
+			dom.append(actionButton);
+			
+			var actionButton = $("<button></button>");
+			actionButton.click(function()
+			{
+				var returnValue = {};
+				returnValue["Input"] = {};
+				
+				returnValue["Input"]["name"] = "move";
+				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["arguments"] = {};
+				returnValue["Input"]["arguments"]["x"] = "4";
+				returnValue["Input"]["arguments"]["y"] = "2";
+				ajax.scheduleSend(returnValue, function(){});
+			});
+			actionButton.text("Move to (4,2) " + ship.identity.name);
+			
+			dom.append(actionButton);
+			
+			var actionButton = $("<button></button>");
+			actionButton.click(function()
+			{
+				var returnValue = {};
+				returnValue["Input"] = {};
+				
+				returnValue["Input"]["name"] = "move";
+				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["arguments"] = {};
+				returnValue["Input"]["arguments"]["x"] = "0";
+				returnValue["Input"]["arguments"]["y"] = "0";
+				ajax.scheduleSend(returnValue, function(){});
+			});
+			actionButton.text("Move to (0,0) " + ship.identity.name);
 			
 			dom.append(actionButton);
 		}

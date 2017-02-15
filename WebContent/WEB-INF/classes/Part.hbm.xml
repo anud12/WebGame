@@ -19,5 +19,10 @@
 	       	<key column ="id"></key>
 	       	<property name="area" type="double"></property>
         </joined-subclass>
+        
+        <joined-subclass name= "persistence.table.entity.PartEngine" table="PART_ENGINE">
+	       	<key column ="id"></key>
+	       	<property name="thrust" type="double"></property>
+        </joined-subclass>
     </class>
 </hibernate-mapping>

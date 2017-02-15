@@ -1,0 +1,8 @@
+
+//Ship parts
+
+select ship_part.id, ship.id, ship.name, part.id, part.name from part
+join ship_part on ship_part.id_part = part.id
+join ship on ship.id = ship_part.id_ship
+order by ship.id
+

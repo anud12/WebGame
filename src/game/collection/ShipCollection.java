@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import game.GameContext;
 import game.controller.ObjectController;
-import game.controller.ShipController;
+import game.controller.ship.ShipController;
 import persistence.Persistence;
 import persistence.table.entity.Ship;
 

@@ -3,9 +3,6 @@ package spring;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import persistence.Persistence;
-import test.spring.TestBean;
-
 public class Spring
 {
 	protected static ApplicationContext persistence;

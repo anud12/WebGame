@@ -3,21 +3,25 @@
  "-//Hibernate/Hibernate Mapping DTD//EN"
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
 <hibernate-mapping>
-    <class name="persistence.table.entity.Ship" >
+    <class name="persistence.table.entity.GameObject" >
     
         <id name="id" type="int" column="id">
         </id>
+        <property name="x" column="x" type="long"/>
+        <property name="y" column="y" type="long"/>
+                
+        <joined-subclass name="persistence.table.entity.Ship" table="SHIP">
+    
+        <key column="id"></key>
         
         <property name="name" column="name" type="string"/>
         <property  name="userId" column="id_user" type="int"/>
         <property name="energy" column="energy" type="long"/>
         
-        <property name="x" column="x" type="double"/>
-        <property name="y" column="y" type="double"/>
-        
         <bag name="partList" table="ship_part" lazy="false">
         	<key column="id_ship" ></key>
         	<many-to-many  class="persistence.table.entity.Part" column="id_part" />
         </bag> 
+    </joined-subclass>
     </class>
 </hibernate-mapping>

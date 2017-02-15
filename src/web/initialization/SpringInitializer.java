@@ -4,12 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import persistence.Persistence;
 import spring.Spring;
-import test.spring.TestBean;
 
 @WebListener
 public class SpringInitializer implements ServletContextListener

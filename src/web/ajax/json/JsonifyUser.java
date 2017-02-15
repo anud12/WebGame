@@ -8,16 +8,10 @@ import org.hibernate.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import persistence.Persistence;
 import persistence.table.entity.Ship;
-import persistence.table.entity.Tables;
 import persistence.table.entity.User;
 import spring.Spring;
-import web.initialization.SpringInitializer;
-import persistence.Persistence;
-import persistence.table.entity.Part;
 
 public class JsonifyUser implements JSONMarshaller<User>
 {

@@ -5,13 +5,14 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import game.controller.action.IAction;
+import game.controller.IAction;
+import game.controller.ship.ShipWrapper;
 import persistence.table.entity.Ship;
 
-public class TestAction implements IAction<Ship>
+public class TestAction implements IAction<ShipWrapper>
 {
 	protected LinkedList<Map<String, Object>> argumentList;
-	protected Ship ship;
+	protected ShipWrapper ship;
 	
 	protected int deltaTimeMS;
 	
@@ -87,13 +88,13 @@ public class TestAction implements IAction<Ship>
 	}
 
 	@Override
-	public void setTarget(Ship object)
+	public void setTarget(ShipWrapper object)
 	{
 		ship = object;
 	}
 
 	@Override
-	public Ship getTarget()
+	public ShipWrapper getTarget()
 	{
 		return ship;
 	}
@@ -109,5 +110,12 @@ public class TestAction implements IAction<Ship>
 	{
 		JSONObject returnObject = new JSONObject();
 		return returnObject;
+	}
+
+	@Override
+	public void subscriptionNotice(ShipWrapper object)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

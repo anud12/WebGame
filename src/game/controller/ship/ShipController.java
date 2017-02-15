@@ -1,12 +1,14 @@
-package game.controller;
+package game.controller.ship;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import game.FrameIteration;
-import game.collection.BufferedHashMap;
 import game.collection.ShipCollection;
-import game.controller.action.IAction;
+import game.controller.IAction;
+import game.controller.ObjectController;
 import persistence.table.entity.Ship;
 import test.game.controller.TestAction;
 
@@ -15,8 +17,8 @@ public class ShipController implements FrameIteration, ObjectController
 	protected int id;
 	protected int deltaTimeMS = 0;
 	protected ShipCollection collection;
-	protected Map<String,IAction> actions;
-		
+	protected Map<String,IAction<ShipWrapper>> actions;
+	protected LinkedList<String> actionKeys;
 	
 	public ShipController(int shipId, ShipCollection collection)
 	{
@@ -25,6 +27,14 @@ public class ShipController implements FrameIteration, ObjectController
 		this.actions = new HashMap<>();
 		
 		actions.put("remove", new TestAction());
+		actions.put("part", new PartAction());
+		actions.put("move", new MoveAction());
+		
+		actionKeys = new LinkedList<>();
+		
+		actionKeys.addLast("part");
+		actionKeys.addLast("remove");
+		actionKeys.addLast("move");
 	}
 	@Override
 	public void add(String actionName, Map<String, Object> arguments)
@@ -34,24 +44,15 @@ public class ShipController implements FrameIteration, ObjectController
 		{
 			actions.get(actionName).addArguments(arguments);
 			System.out.println(this + " : Added test command, arg :" + arguments);
+			return;
 		}
-		
+		if(actionName.equals("move"))
+		{
+			actions.get(actionName).addArguments(arguments);
+			System.out.println(this + " : Added move command, arg :" + arguments);
+			return;
+		}
 	}
-
-	@Override
-	public void clear()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void queue(String actionName, Map<String, Object> arguments)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public Object call() throws Exception
 	{
@@ -59,37 +60,20 @@ public class ShipController implements FrameIteration, ObjectController
 		Ship ship = (Ship) collection.get(id);
 		ship.calculateProperties();
 		
-		long increment = ship.getEnergy();
-		long newIncrement = (long) (increment + (ship.getRate() * deltaTimeMS));
+		ShipWrapper shipWrapper = new ShipWrapper(ship);
 		
-		System.out.println(this + " : DeltaTime " + deltaTimeMS + " newIncrement " + newIncrement + " rate " + ship.getRate());
-		
-		if(newIncrement < ship.getArea())
+		Iterator<String> actionIterator = actionKeys.iterator();
+		while(actionIterator.hasNext())
 		{
-			increment = newIncrement;
-		}
-		else
-		{
-			increment = ship.getArea();
-		}
-		
-		ship.setEnergy (increment);
-		
-		IAction<Ship> action = actions.get("remove");
-		do
-		{
+			IAction<ShipWrapper> action = actions.get(actionIterator.next());
 			action.setDeltaTimeMS(deltaTimeMS);
-			action.setTarget(ship);
+			action.setTarget(shipWrapper);
 			action.call();
-			
+			shipWrapper.notifySubscribers();
 		}
-		while(false);
 		
 		
-		
-		ship = action.getTarget();
-		
-		System.out.println(this + " : Incremented " + ship.getId() +" at " + newIncrement + " Area : " + ship.getArea());
+		System.out.println(this + " : Incremented " + ship.getId() +"  Area : " + ship.getArea());
 		
 		collection.put(ship.getId(), ship);
 		return this;

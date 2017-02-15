@@ -9,14 +9,13 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import game.collection.GameDataContainer;
+import persistence.table.entity.Part;
+import persistence.table.entity.PartGenerator;
+import persistence.table.entity.PartStorage;
 import persistence.table.entity.Ship;
 import persistence.table.entity.Tables;
 import persistence.table.entity.User;
 import persistence.table.entity.World;
-import spring.Spring;
-import persistence.table.entity.Part;
-import persistence.table.entity.PartGenerator;
-import persistence.table.entity.PartStorage;
 
 public class Persistence
 {

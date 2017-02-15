@@ -26,9 +26,10 @@
 		
 		<!-- List of XML mapping files -->
 		<mapping resource="User.hbm.xml"/>
-		<mapping resource="Ship.hbm.xml"/>
+		<mapping resource="GameObject.hbm.xml"/>
 		<mapping resource="Part.hbm.xml"/>
 		<mapping resource="World.hbm.xml"/>
+		
 	</session-factory>
 </hibernate-configuration>
 
