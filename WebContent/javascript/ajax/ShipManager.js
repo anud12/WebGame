@@ -8,6 +8,8 @@ var ShipManager =
 		ShipManager.dom.append(ShipManager.container);
 		
 		ShipManager.ships = [];
+		ShipManager.shipKeys = [];
+		ShipManager.callbacks = [];
 		
 		ajax.setMetaDataCallback(ShipManager.ajaxParse);
 	},
@@ -32,6 +34,8 @@ var ShipManager =
 		isNew = false;
 		if(typeof(ShipManager.ships[arrayShip['identity']['name']]) == 'undefined')
 		{
+			ShipManager.shipKeys.push(arrayShip['identity']['name']);
+			
 			ShipManager.ships[arrayShip['identity']['name']] = {};
 			ShipManager.ships[arrayShip['identity']['name']]['update'] = function(){};
 			isNew = true;
@@ -65,9 +69,22 @@ var ShipManager =
 			
 			ShipManager.createShipDom(ship);
 		}
+		
+		for(var i = 0 ; i < ShipManager.callbacks.length ; i++)
+		{
+			if(typeof(ShipManager.callbacks[i]) != "undefined")
+			{
+				var action = ShipManager.callbacks[i];
+				action();
+			}
+		}
+		
 	},
 	
-	
+	addUpdateCallback : function(callback)
+	{
+		this.callbacks.push(callback);
+	},
 	buildDom(ship, shipWindow)
 	{
 		var window = windowManager.newWindow({windowName: ship['identity']['name'], closeable: true, height: 250, className: "green"});

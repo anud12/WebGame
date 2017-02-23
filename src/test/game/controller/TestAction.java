@@ -2,9 +2,12 @@ package test.game.controller;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
 
+import game.collection.GameDataContainer;
 import game.controller.IAction;
 import game.controller.ship.ShipWrapper;
 import persistence.table.entity.Ship;
@@ -18,6 +21,8 @@ public class TestAction implements IAction<ShipWrapper>
 	
 	protected int remainingTimeMS;
 	
+	protected double difference;
+	
 	public TestAction()
 	{
 		argumentList = new LinkedList<>();
@@ -26,11 +31,12 @@ public class TestAction implements IAction<ShipWrapper>
 	@Override
 	public IAction call() throws Exception
 	{
+		Logger logger = Logger.getLogger("Ship " + ship.getId());
 		remainingTimeMS = 0;
 		//Check if there are any actions to do
 		if(argumentList.size() < 1)
 		{
-			System.out.println(this + " : Returned, no actions to do");
+			logger.log(Level.FINEST, "Returned, no actions to do");
 			return this;
 		}
 		
@@ -42,14 +48,13 @@ public class TestAction implements IAction<ShipWrapper>
 		int durationLeft = duration - deltaTimeMS;
 		long updateValue = 0;
 		
-		System.out.println(this + " : Duration = " + duration);
+		logger.log(Level.FINEST, "Duration = " + duration);
 		if(duration < 0)
 		{
 			this.argumentList.removeFirst();
 			this.call();
 			
-			System.out.println(this + " : Returned, called next action");
-			
+			logger.log(Level.FINEST, "Returned, called next action");			
 			return this;
 		}
 		
@@ -59,8 +64,10 @@ public class TestAction implements IAction<ShipWrapper>
 		
 		if(deltaTimeMS > duration)
 		{
-			updateValue = value * duration;
-			System.out.println(this + " : Sub delta time " + duration);
+			difference = value * duration + difference;
+			updateValue = (long) difference;
+			difference = difference - (long) difference;
+			logger.log(Level.FINEST, "Sub delta time " + duration);
 			
 			remainingTimeMS = -durationLeft;
 			deltaTimeMS = remainingTimeMS;	
@@ -70,13 +77,16 @@ public class TestAction implements IAction<ShipWrapper>
 		}
 		else
 		{
-			updateValue = value * deltaTimeMS;
+			difference = value * deltaTimeMS + difference;
+			updateValue = (long) difference;
+			difference = difference - (long) difference;
+			
 		}
 		
 		
 		ship.setEnergy(ship.getEnergy() + updateValue);
 		
-		System.out.println(this + " : Returned, updated " + updateValue + " time remaining " + durationLeft);
+		logger.log(Level.FINEST, "Returned, updated " + updateValue + " time remaining " + durationLeft);
 		
 		return this;
 	}
@@ -117,5 +127,11 @@ public class TestAction implements IAction<ShipWrapper>
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setDataContainer(GameDataContainer container)
+	{
+		// TODO Auto-generated method stub
 	}
 }

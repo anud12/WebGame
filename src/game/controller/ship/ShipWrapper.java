@@ -24,6 +24,10 @@ public class ShipWrapper
 		dependency.put("location", new HashSet<>());
 	}
 	
+	public int getId()
+	{
+		return ship.getId();
+	}
 	
 	public long getEnergy()
 	{

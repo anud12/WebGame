@@ -1,6 +1,7 @@
 package persistence;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,6 +24,50 @@ public class Persistence
 	protected GameDataContainer dataContainer;
 	
 	
+	public void initialize()
+	{
+		System.out.println("Persistence :" + dataContainer);
+		Session session = sessionFactory.openSession();
+		
+		List shipList = session.createQuery("from Ship").getResultList();
+		Iterator<Ship> shipIterator = shipList.iterator();
+		while(shipIterator.hasNext())
+		{
+			Ship ship = shipIterator.next();
+			System.out.println("Persistence : 1 " + dataContainer);
+			System.out.println("Persistence : 2 " + dataContainer.get("Ship"));
+			System.out.println("Persistence : 3 " + ship);
+			System.out.println("Persistence : 4 " + ship.getId());
+			dataContainer.get("Ship").put(ship.getId(), ship);
+		}
+		
+		List partList = session.createQuery("from Part").getResultList();
+		Iterator<Part>partIterator = partList.iterator();
+		while(partIterator.hasNext())
+		{
+			Part part = partIterator.next();
+			dataContainer.get("Part").put(part.getId(), part);
+		}
+		
+		dataContainer.swap();
+				
+		shipIterator = shipList.iterator();
+		while(shipIterator.hasNext())
+		{
+			Ship ship = shipIterator.next();
+			dataContainer.get("Ship").put(ship.getId(), ship);
+		}
+		
+		partIterator = partList.iterator();
+		while(partIterator.hasNext())
+		{
+			Part part = partIterator.next();
+			dataContainer.get("Part").put(part.getId(), part);
+		}
+		
+		session.close();
+	}
+	
 	public SessionFactory getSessionFactory()
 	{
 		return sessionFactory;
@@ -40,26 +85,7 @@ public class Persistence
 	{
 		this.dataContainer = dataContainer;
 		
-		System.out.println("Persistence :" + dataContainer);
-		Session session = sessionFactory.openSession();
-		Iterator<Ship> shipIterator = session.createQuery("from Ship").getResultList().iterator();
-		while(shipIterator.hasNext())
-		{
-			Ship ship = shipIterator.next();
-			dataContainer.get("Ship").put(ship.getId(), ship);
-		}
-		session.close();
 		
-		dataContainer.get("Ship").swap();
-		
-		session = sessionFactory.openSession();
-		shipIterator = session.createQuery("from Ship").getResultList().iterator();
-		while(shipIterator.hasNext())
-		{
-			Ship ship = shipIterator.next();
-			dataContainer.get("Ship").put(ship.getId(), ship);
-		}
-		session.close();
 	}
 	
 	public Persistence()

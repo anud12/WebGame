@@ -1,9 +1,12 @@
 package game.controller.ship;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
 
+import game.collection.GameDataContainer;
 import game.controller.IAction;
 import persistence.table.entity.Ship;
 
@@ -15,6 +18,9 @@ public class MoveAction implements IAction<ShipWrapper>
 	protected long yDestination;
 	protected int deltaTimeMS;
 	
+	protected double xDifference;
+	protected double yDifference;
+	
 	public MoveAction()
 	{
 	}
@@ -22,6 +28,8 @@ public class MoveAction implements IAction<ShipWrapper>
 	@Override
 	public IAction<ShipWrapper> call() throws Exception
 	{
+		Logger logger = Logger.getLogger("Ship " + ship.getId());
+		
 		long x = ship.getX();
 		long y = ship.getY();
 		
@@ -31,52 +39,61 @@ public class MoveAction implements IAction<ShipWrapper>
 		}
 		double thrust = ship.getThrust();
 		
-		System.out.println(this + " : Initial (" + x + " , " + y + ") thrust (" + thrust + ")");
-		System.out.println(this + " : Destination (" + xDestination + " , " + yDestination + ")");
+		
+		logger.log(Level.FINEST, "Initial (" + x + " , " + y + ") thrust (" + thrust + ")");
+		logger.log(Level.FINEST, "Initial (" + x + " , " + y + ") thrust (" + thrust + ")");
 		
 		long xMoved = xDestination - x; 
 		long yMoved = yDestination - y;
 		
-		System.out.println(this + " : Moved (" + xMoved + " , " + yMoved + ")");
+		logger.log(Level.FINEST, " Moved (" + xMoved + " , " + yMoved + ")");
 		
 		double distance = Math.sqrt(Math.pow(xMoved, 2) + Math.pow(yMoved, 2));
-		System.out.println(this + " : Distance " + distance);
+		logger.log(Level.FINEST, "Distance " + distance);
 		
 		double xNormalized = xMoved / (distance * 1.0);
 		double yNormalized = yMoved / (distance * 1.0);
 		
-		System.out.println(this + " : Normalized (" + xNormalized + " , " + yNormalized + ")");
+		logger.log(Level.FINEST, "Normalized (" + xNormalized + " , " + yNormalized + ")");
 		
-		double xDistance = thrust * xNormalized * deltaTimeMS / 10;
-		double yDistance = thrust * yNormalized * deltaTimeMS / 10;
+		double xDistance = thrust * xNormalized * deltaTimeMS / 10 + xDifference;
+		double yDistance = thrust * yNormalized * deltaTimeMS / 10 + yDifference;
 		
-		System.out.println(this + " : Normalized Distance (" + xDistance + " , " + yDistance + ")");
+		logger.log(Level.FINEST, "Normalized Distance (" + xDistance + " , " + yDistance + ")");
+		
+		xDifference = xDistance - (long) xDistance;
+		yDifference = yDistance - (long) yDistance;
+		
+		logger.log(Level.FINEST, "Difference (" + xDifference + " , " + yDifference + ")");
 		
 		long xNew = (long) xDistance + x;
 		long yNew = (long) yDistance + y;
-		System.out.println(this + " : Result (" + xNew + "," + yNew +")");
+		logger.log(Level.FINEST, "New (" + xNew + "," + yNew +")");
 		
-		System.out.println(this + " : Distance "+ Math.abs(xDistance) + " > " + Math.abs(xMoved));
+		logger.log(Level.FINEST, "Distance "+ Math.abs(xDistance) + " > " + Math.abs(xMoved));
+		logger.log(Level.FINEST, "Distance "+ Math.abs(yDistance) + " > " + Math.abs(yMoved));
 		
 		if( Math.abs(xDistance) > Math.abs(xMoved))
 		{
-			System.out.println(this + " : Set X to destination (" + xDestination + ")");
+			logger.log(Level.FINEST, "Set X to destination (" + xDestination + ")");
+			xDifference = 0;
 			ship.setX(xDestination);
 		}
 		else
 		{
-			System.out.println(this + " : Set X (" + xNew + ")");
+			logger.log(Level.FINEST, "Set X (" + xNew + ")");
 			ship.setX(xNew);
 		}
 		
 		if( Math.abs(yDistance) > Math.abs(yMoved))
 		{
-			System.out.println(this + " : Set Y to destination (" + yDestination + ")");
+			logger.log(Level.FINEST, "Set Y to destination (" + yDestination + ")");
+			yDifference = 0;
 			ship.setY(yDestination);
 		}
 		else
 		{
-			System.out.println(this + " : Set Y (" + yNew + ")");
+			logger.log(Level.FINEST, "Set Y (" + yNew + ")");
 			ship.setY(yNew);
 		}
 		
@@ -122,6 +139,12 @@ public class MoveAction implements IAction<ShipWrapper>
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setDataContainer(GameDataContainer container)
+	{
+		// TODO Auto-generated method stub
 	}
 
 	

@@ -5,6 +5,8 @@ import java.util.concurrent.Callable;
 
 import org.json.simple.JSONObject;
 
+import game.collection.GameDataContainer;
+
 
 public interface IAction<T> extends Callable<IAction>
 {
@@ -14,5 +16,6 @@ public interface IAction<T> extends Callable<IAction>
 	public T getTarget();
 	public void setDeltaTimeMS(int deltaTime);
 	public JSONObject getJSONDefinition();
+	public void setDataContainer(GameDataContainer container);
 	
 }

@@ -14,6 +14,7 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 	@Override
 	public JSONObject marshal(Ship ship)
 	{
+		ship.calculateProperties();
 		JSONObject shipObject = new JSONObject();
 		
 		//ID
@@ -45,58 +46,36 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		JSONObject statusValue = new JSONObject();
 		
 		statusValue.put("name", "Energy");
-		statusValue.put("value", ship.getEnergy()/100.0f);
+		statusValue.put("value", String.format("%1$.2f", ship.getEnergy()/100.0f));
 		statusArray.add(statusValue);
 		
 		statusValue = new JSONObject();
 		statusValue.put("name", "X");
-		statusValue.put("value", ship.getX()/100.0f);
+		statusValue.put("value", String.format("%1$.2f", ship.getX()/100.0f));
 		statusArray.add(statusValue);
 		
 		statusValue = new JSONObject();
 		statusValue.put("name", "Y");
-		statusValue.put("value", ship.getY()/100.0f);
+		statusValue.put("value", String.format("%1$.2f", ship.getY()/100.0f));
+		statusArray.add(statusValue);
+		
+		statusValue = new JSONObject();
+		statusValue.put("name", "Area");
+		statusValue.put("value", String.format("%1$.2f", ship.getArea()/100.0f));
+		statusArray.add(statusValue);
+		
+		statusValue = new JSONObject();
+		statusValue.put("name", "Rate");
+		statusValue.put("value", ship.getRate());
+		statusArray.add(statusValue);
+		
+		statusValue = new JSONObject();
+		statusValue.put("name", "Thrust");
+		statusValue.put("value", ship.getThrust());
 		statusArray.add(statusValue);
 		
 		statusCategory.put("values", statusArray);
 		shipValuesArray.add(statusCategory);
-		
-		
-		//Specifications Category
-		JSONObject specificationCategory = new JSONObject();
-		specificationCategory.put("name", "Specifications");
-		
-		//Category Array
-		JSONArray specificationArray = new JSONArray();
-
-		//Values
-		ship.calculateProperties();
-		
-		JSONObject specificationValue = new JSONObject();
-		specificationValue.put("name", "Area");
-		specificationValue.put("value", ship.getArea()/100.0f);
-		specificationArray.add(specificationValue);
-		
-		specificationValue = new JSONObject();
-		specificationValue.put("name", "Rate");
-		specificationValue.put("value", ship.getRate());
-		specificationArray.add(specificationValue);
-		
-		specificationValue = new JSONObject();
-		specificationValue.put("name", "Thrust");
-		specificationValue.put("value", ship.getThrust());
-		specificationArray.add(specificationValue);
-		
-		//Composing
-		specificationCategory.put("values", specificationArray);
-		shipValuesArray.add(specificationCategory);
-		/*
-		shipObject.put("name", ship.getName());
-		shipObject.put("value", ship.getValue());
-		shipObject.put("area", ship.getArea());
-		shipObject.put("rate", ship.getRate());
-		*/
-		
 		
 		//Parts
 		
@@ -108,10 +87,12 @@ public class JsonifyShip implements JSONMarshaller<Ship>
 		
 		//Parts
 		Iterator<Part> partIterator = ship.getPartList().iterator();
+		int partNumber = 0;
 		while(partIterator.hasNext())
 		{
 			Part part = partIterator.next();
 			JSONObject partJSON = new JSONObject();
+			partJSON.put("id", partNumber++);
 			partJSON.put("name", part.getName());
 			partJSON.put("value", "");
 			

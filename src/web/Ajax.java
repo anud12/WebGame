@@ -60,7 +60,7 @@ public class Ajax extends HttpServlet
 			
 			JSONObject returnObject = new JSONObject();
 			
-			System.out.println(this + " Recieved IP " + request.getRemoteAddr() + " json : " + recievedJSON);
+			//System.out.println(this + " Recieved IP " + request.getRemoteAddr() + " json : " + recievedJSON);
 			
 			Iterator<JSONObject> iterator = recievedJSON.iterator();
 			
@@ -89,7 +89,7 @@ public class Ajax extends HttpServlet
 			JsonifyUser jsonify = (JsonifyUser) Spring.getAjax().getBean("JsonifyUser");
 			
 			returnObject.put("user", jsonify.marshal(request.getSession()));
-			returnObject.put("time", new Date().toGMTString());
+			returnObject.put("time", (new Date().toGMTString()) + " " + new Date().getTime() );
 			
 			response.getWriter().write(returnObject.toString());
 			

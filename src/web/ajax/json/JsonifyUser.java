@@ -30,8 +30,8 @@ public class JsonifyUser implements JSONMarshaller<User>
 		while(shipsIterator.hasNext())
 		{			
 			Ship ship = shipsIterator.next();
-			
 			array.add(jsonifyShip.marshal(ship));
+			
 		}
 		
 		wrapperObject = new JSONObject();

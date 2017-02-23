@@ -41,7 +41,6 @@ public class Loop implements Runnable
     	
     	//Get the time between frames
     	deltaTime = (int) (( System.nanoTime() - time ) / 1000000);
-    	System.out.println(this + " : Delta time " + deltaTime);
     	
     	//Check the frequency of the calls
     	if(deltaTime < minimumDeltaTime)
@@ -58,7 +57,6 @@ public class Loop implements Runnable
     				useNano = true;
     				sleepTime = (int) (minimumDeltaTime * 1000000 - deltaTime * 1000000);
     			}
-    			System.out.println(this + " : Sleep time " + sleepTime);
     			//Wait until the minimum time
     			if(useNano)
     				Thread.sleep(0, sleepTime);

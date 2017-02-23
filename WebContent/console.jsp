@@ -97,6 +97,7 @@
 	<script src="javascript/ajax/ajax.js"></script>
 	<script src="javascript/ajax/ShipManager.js"></script>
 	<script src="javascript/Programs/userPanel.js"></script>
+	<script src="javascript/Programs/minimap.js"></script>
 	
 	
 	<script>
@@ -107,7 +108,6 @@
 		ajax.setMetaDataCallback(function(data)
 		{
 			$("#ajaxResponse").html("");
-			console.log(typeof(data.message));
 			$("#ajaxResponse").append(JSON.stringify(JSON.parse(data.message), null, "  "));
 		});
 		
@@ -167,15 +167,119 @@
 			actionButton.text("Move to (0,0) " + ship.identity.name);
 			
 			dom.append(actionButton);
+			
+			var actionButton = $("<button></button>");
+			actionButton.click(function()
+			{
+				var returnValue = {};
+				returnValue["Input"] = {};
+				
+				returnValue["Input"]["name"] = "addPart";
+				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["arguments"] = {};
+				returnValue["Input"]["arguments"]["id"] = "1";
+				returnValue["Input"]["arguments"]["action"] = "add";
+				ajax.scheduleSend(returnValue, function(){});
+			});
+			actionButton.text("Add part type 1 to " + ship.identity.name);
+			dom.append(actionButton);
+			
+			var actionButton = $("<button></button>");
+			actionButton.click(function()
+			{
+				var returnValue = {};
+				returnValue["Input"] = {};
+				
+				returnValue["Input"]["name"] = "addPart";
+				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["arguments"] = {};
+				returnValue["Input"]["arguments"]["id"] = "2";
+				returnValue["Input"]["arguments"]["action"] = "add";
+				ajax.scheduleSend(returnValue, function(){});
+			});
+			actionButton.text("Add part type 2 to " + ship.identity.name);
+			dom.append(actionButton);
+			
+			var actionButton = $("<button></button>");
+			actionButton.click(function()
+			{
+				var returnValue = {};
+				returnValue["Input"] = {};
+				
+				returnValue["Input"]["name"] = "addPart";
+				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["arguments"] = {};
+				returnValue["Input"]["arguments"]["id"] = "4";
+				returnValue["Input"]["arguments"]["action"] = "remove";
+				ajax.scheduleSend(returnValue, function(){});
+			});
+			actionButton.text("Remove part 4 from " + ship.identity.name);
+			
+			dom.append(actionButton);
 		}
 		
+		connection =  $("#connection");
+		var pingProgress = $("<div id='progress'></div>").progressbar({value:false, max:40});
+		connection.find("content").html("");
+		connection.find("content").append(pingProgress);
+		connection.find("content").append("<div id='ping-value'></div>");
+		
+		ajax.setMetaDataCallback(function(data){
+			connection.find("content > #ping-value").html("");
+			if(data.fail)
+			{
+				pingProgress.progressbar("value", false);
+				connection.find("content > #ping-value").append("Unable to connect");
+			}
+			else
+			{
+				pingProgress.progressbar("value", data.ping);
+				connection.find("content > #ping-value").append(data.ping);
+			}
+			});
+		
+				
+		Minimap.initialize($("#minimap"));
+		
+		Minimap.onClick(function(location)
+				{
+					console.log(location);
+					var returnValue = {};
+					returnValue["Input"] = {};
+					
+					returnValue["Input"]["name"] = "move";
+					returnValue["Input"]["target"] = 2 + "";
+					returnValue["Input"]["arguments"] = {};
+					returnValue["Input"]["arguments"]["x"] = location.x + "";
+					returnValue["Input"]["arguments"]["y"] = location.y + "";
+					ajax.scheduleSend(returnValue, function(){});
+		});
+		ShipManager.addUpdateCallback(function()
+				{
+					for(var i = 0; i < ShipManager.shipKeys.length ; i++)
+						{
+							var key = ShipManager.shipKeys[i];
+							
+							var ship = ShipManager.ships[key];
+							
+							var object = {};
+							object.x = ship.location.x / 100;
+							object.y = ship.location.y / 100;
+							object.color = "green";							
+							Minimap.update(ship.identity.name, object);
+						}
+				});
 	})
 	</script>
 	
 	<div style = "overflow:overlay; position:fixed; width:50%; height:100%; top:0x; margin-right:50%;display:block; ">
+		<div id="connection">
+			<content></content>
+		</div>
 		<div id="userPanel"></div>
 		<div id="shipList"></div>
 		<div id="shipContainers"></div>
+		<div id="minimap"></div>
 	</div>
 	<div style = "">
 		<div id="ajaxResponse" style = ""></div>

@@ -5,20 +5,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean class="game.Loop" id="Loop" scope="singleton" init-method="init">
     	<property name="minimumDeltaTime">
-    		<value>150</value>
+    		<value>20</value>
     	</property>
     	<property name="context">
     		<ref bean="Context"></ref>
     	</property>
     </bean>
     
-    <bean class="game.GameContext" id="Context" scope="singleton" init-method="init">
+    <bean class="game.GameContext" id="Context" scope="singleton" init-method="init" lazy-init="false" >
 	    <property name="dataContainer">
 	    	<ref bean="DataContainer"/>
 	    </property>
     </bean>
     
-    <bean class="game.collection.GameDataContainer" id="DataContainer" scope="singleton">
+    <bean class="game.collection.GameDataContainer" id="DataContainer" scope="singleton" lazy-init="false" >
      	<constructor-arg>
      	 	<ref bean="Context"/>
      	</constructor-arg>
@@ -27,8 +27,13 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
      	</property>
     </bean>
     
+    <bean class="game.controller.ship.ShipController" id="ShipController" scope="prototype">
+    	<constructor-arg>
+    		<ref bean="DataContainer"></ref>
+    	</constructor-arg>
+    </bean>
     
-    <bean id="Persistence" class="persistence.Persistence" scope="singleton" depends-on="DataContainer">
+    <bean id="Persistence" class="persistence.Persistence" scope="singleton" init-method="initialize">
     	<property name="dataContainer" ref="DataContainer"></property>
     </bean>
 </beans>

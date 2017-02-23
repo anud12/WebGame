@@ -1,18 +1,18 @@
 package game.collection;
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 import game.GameContext;
 import persistence.Persistence;
 
-public class GameDataContainer extends HashMap<String, BufferedHashMap<Integer, Object>>
+public class GameDataContainer extends HashMap<String, Map<Integer, Object>>
 {
 	protected Persistence persistence;
 	public GameDataContainer(GameContext context)
 	{
-		this.put("Ship", new ShipCollection(context));
-		
+		this.put("Ship", new ShipCollection(context, this));
+		this.put("Part", new HashMap<Integer,Object>());
 	}
 	public Persistence getPersistence()
 	{
@@ -28,11 +28,6 @@ public class GameDataContainer extends HashMap<String, BufferedHashMap<Integer, 
 	}
 	public void swap()
 	{
-		Iterator<BufferedHashMap<Integer, Object>> keyIterator = this.values().iterator();
-		while(keyIterator.hasNext())
-		{
-			BufferedHashMap map = keyIterator.next();
-			map.swap();
-		}
+		((ShipCollection) this.get("Ship")).swap();
 	}
 }
