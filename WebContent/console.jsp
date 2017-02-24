@@ -124,13 +124,13 @@
 				returnValue["Input"] = {};
 				
 				returnValue["Input"]["name"] = "remove";
-				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["target"] = ship.id + "";
 				returnValue["Input"]["arguments"] = {};
 				returnValue["Input"]["arguments"]["amount"] = "-2";
 				returnValue["Input"]["arguments"]["duration"] = "5000";
 				ajax.scheduleSend(returnValue, function(){});
 			});
-			actionButton.text("Decrement " + ship.identity.name);
+			actionButton.text("Decrement " + ship.name);
 			
 			dom.append(actionButton);
 			
@@ -141,13 +141,13 @@
 				returnValue["Input"] = {};
 				
 				returnValue["Input"]["name"] = "move";
-				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["target"] = ship.id + "";
 				returnValue["Input"]["arguments"] = {};
 				returnValue["Input"]["arguments"]["x"] = "4";
 				returnValue["Input"]["arguments"]["y"] = "2";
 				ajax.scheduleSend(returnValue, function(){});
 			});
-			actionButton.text("Move to (4,2) " + ship.identity.name);
+			actionButton.text("Move to (4,2) " + ship.name);
 			
 			dom.append(actionButton);
 			
@@ -158,13 +158,13 @@
 				returnValue["Input"] = {};
 				
 				returnValue["Input"]["name"] = "move";
-				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["target"] = ship.id + "";
 				returnValue["Input"]["arguments"] = {};
 				returnValue["Input"]["arguments"]["x"] = "0";
 				returnValue["Input"]["arguments"]["y"] = "0";
 				ajax.scheduleSend(returnValue, function(){});
 			});
-			actionButton.text("Move to (0,0) " + ship.identity.name);
+			actionButton.text("Move to (0,0) " + ship.name);
 			
 			dom.append(actionButton);
 			
@@ -175,13 +175,13 @@
 				returnValue["Input"] = {};
 				
 				returnValue["Input"]["name"] = "addPart";
-				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["target"] = ship.id + "";
 				returnValue["Input"]["arguments"] = {};
 				returnValue["Input"]["arguments"]["id"] = "1";
 				returnValue["Input"]["arguments"]["action"] = "add";
 				ajax.scheduleSend(returnValue, function(){});
 			});
-			actionButton.text("Add part type 1 to " + ship.identity.name);
+			actionButton.text("Add part type 1 to " + ship.name);
 			dom.append(actionButton);
 			
 			var actionButton = $("<button></button>");
@@ -191,13 +191,13 @@
 				returnValue["Input"] = {};
 				
 				returnValue["Input"]["name"] = "addPart";
-				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["target"] = ship.id + "";
 				returnValue["Input"]["arguments"] = {};
 				returnValue["Input"]["arguments"]["id"] = "2";
 				returnValue["Input"]["arguments"]["action"] = "add";
 				ajax.scheduleSend(returnValue, function(){});
 			});
-			actionButton.text("Add part type 2 to " + ship.identity.name);
+			actionButton.text("Add part type 2 to " + ship.name);
 			dom.append(actionButton);
 			
 			var actionButton = $("<button></button>");
@@ -207,13 +207,13 @@
 				returnValue["Input"] = {};
 				
 				returnValue["Input"]["name"] = "addPart";
-				returnValue["Input"]["target"] = ship.identity.id + "";
+				returnValue["Input"]["target"] = ship.id + "";
 				returnValue["Input"]["arguments"] = {};
 				returnValue["Input"]["arguments"]["id"] = "4";
 				returnValue["Input"]["arguments"]["action"] = "remove";
 				ajax.scheduleSend(returnValue, function(){});
 			});
-			actionButton.text("Remove part 4 from " + ship.identity.name);
+			actionButton.text("Remove part 4 from " + ship.name);
 			
 			dom.append(actionButton);
 		}
@@ -263,10 +263,10 @@
 							var ship = ShipManager.ships[key];
 							
 							var object = {};
-							object.x = ship.location.x / 100;
-							object.y = ship.location.y / 100;
+							object.x = ship.x / 100;
+							object.y = ship.y / 100;
 							object.color = "green";							
-							Minimap.update(ship.identity.name, object);
+							Minimap.update(ship.name, object);
 						}
 				});
 	})

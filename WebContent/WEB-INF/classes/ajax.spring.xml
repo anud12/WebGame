@@ -3,7 +3,19 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean class="web.ajax.json.JsonifyUser" id="JsonifyUser" scope="singleton"></bean>
-    <bean class="web.ajax.json.JsonifyShip" id="JsonifyShip" scope="singleton"></bean>
-    <bean class="web.ajax.ControllerMap" id="ControllerMap" scope="singleton"></bean>
+
+	<bean class="web.ajax.json.JsonifySession" id="JsonifySession" scope="singleton">
+    	<constructor-arg ref="JsonifyUser"/>
+    	<constructor-arg ref="JsonifyPart"/>
+    </bean>
+
+    <bean class="web.ajax.json.JsonifyUser" id="JsonifyUser" scope="singleton">
+    	<constructor-arg ref="JsonifyShip"/>
+    </bean>
+    <bean class="web.ajax.json.JsonifyShip" id="JsonifyShip" scope="singleton">
+    	<constructor-arg ref="JsonifyPart"/>
+    </bean>
+    
+    <bean class="web.ajax.json.JsonifyPart" id="JsonifyPart" scope="singleton"/>
+    <bean class="web.ajax.ControllerMap" id="ControllerMap" scope="singleton"/>
 </beans>

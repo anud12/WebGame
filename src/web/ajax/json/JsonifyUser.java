@@ -1,6 +1,7 @@
 package web.ajax.json;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,21 +10,30 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import persistence.Persistence;
+import persistence.table.entity.Part;
 import persistence.table.entity.Ship;
 import persistence.table.entity.User;
 import spring.Spring;
 
 public class JsonifyUser implements JSONMarshaller<User>
 {
-	public JSONObject marshal (User user)
+	protected JSONMarshaller<Ship> jsonifyShip;
+	public JsonifyUser(JSONMarshaller<Ship> jsonifyShip)
 	{
-		JsonifyShip jsonifyShip = (JsonifyShip) Spring.getAjax().getBean("JsonifyShip");
-		
+		this.jsonifyShip = jsonifyShip;
+	}
+	@SuppressWarnings("unchecked")
+	public JSONObject marshal (User user)
+	{		
 		JSONObject wrapperObject = null;
 		
 		JSONObject userObject = new JSONObject();
 		
 		userObject.put("increment", user.getIncrement());
+						
+		wrapperObject = new JSONObject();
+		
+		wrapperObject.put("data", userObject);
 		
 		Iterator<Ship> shipsIterator = user.getShips().iterator();
 		JSONArray array = new JSONArray();
@@ -33,11 +43,8 @@ public class JsonifyUser implements JSONMarshaller<User>
 			array.add(jsonifyShip.marshal(ship));
 			
 		}
-		
-		wrapperObject = new JSONObject();
-		
-		wrapperObject.put("data", userObject);
 		wrapperObject.put("ship", array);
+		
 		
 		return wrapperObject;
 	}
@@ -61,7 +68,7 @@ public class JsonifyUser implements JSONMarshaller<User>
 			User user = (User) dbsession.createQuery("from User u where u.id = '" + userId + "'").getSingleResult();
 			
 			wrapperObject = this.marshal(user);
-			
+						
 			dbsession.close();
 		}
 		return wrapperObject;

@@ -17,13 +17,13 @@ var ShipManager =
 	
 	ajaxParse : function(data)
 	{
-		var message = JSON.parse(data['message']);
+		message = JSON.parse(data['message']);
 		
-		var array = message['user']['ship'];
+		array = message['user']['ship'];
 		
 		for(var i = 0 ; i < array.length; i++)
 		{
-			var element = array[i];
+			element = array[i];
 			ShipManager.updateShip(element);
 		}
 	},
@@ -32,16 +32,16 @@ var ShipManager =
 	updateShip(arrayShip)
 	{
 		isNew = false;
-		if(typeof(ShipManager.ships[arrayShip['identity']['name']]) == 'undefined')
+		if(typeof(ShipManager.ships[arrayShip['name']]) == 'undefined')
 		{
-			ShipManager.shipKeys.push(arrayShip['identity']['name']);
+			ShipManager.shipKeys.push(arrayShip['name']);
 			
-			ShipManager.ships[arrayShip['identity']['name']] = {};
-			ShipManager.ships[arrayShip['identity']['name']]['update'] = function(){};
+			ShipManager.ships[arrayShip['name']] = {};
+			ShipManager.ships[arrayShip['name']]['update'] = function(){};
 			isNew = true;
 		}
 		
-		var ship = ShipManager.ships[arrayShip['identity']['name']];
+		var ship = ShipManager.ships[arrayShip['name']];
 		
 		keys = Object.keys(arrayShip);
 		
@@ -58,7 +58,7 @@ var ShipManager =
 			container = ShipManager.container;
 			
 			button = $("<button class='ship'></button>");
-			button.text(ship['identity']['name']);
+			button.text(ship['name']);
 			button.click(function()
 			{
 				var shipWindow = ShipManager.createShipDom(ship)
@@ -87,7 +87,7 @@ var ShipManager =
 	},
 	buildDom(ship, shipWindow)
 	{
-		var window = windowManager.newWindow({windowName: ship['identity']['name'], closeable: true, height: 250, className: "green"});
+		var window = windowManager.newWindow({windowName: ship['name'], closeable: true, height: 250, className: "green"});
 		window.content.append(shipWindow);
 		
 		console.log(ship);
@@ -95,62 +95,53 @@ var ShipManager =
 	
 	createShipDom(ship)
 	{
-		var shipContainer = $("<ship-container></ship-container");
+		shipContainer = $("<ship-container></ship-container");
 		
-		var title = $("<p class = 'title'></p>");
-		title.text(ship['identity']['name']);
+		title = $("<p class = 'title'></p>");
+		title.text(ship['name']);
 		shipContainer.append(title);
 		
+		category = "Statistics";
+		valueList = $("<ul class = 'value-list'></ul>")
+		shipContainer.append(valueList);
+		
+		categoryTitle = $("<p class = 'category-title'></p>");
+		categoryTitle.text(category);
+		valueList.append(categoryTitle);
+		
 		console.log(ship);
-		
+				
 		var values = [];
-		
-		for(var categoryNumber = 0 ; categoryNumber < ship.statistics.length ; categoryNumber++)
+			
+		for(var valueNumber = 0 ; valueNumber < ship.keyValues.length ; valueNumber++)
 		{
+			valueName = ship.keyValues[valueNumber]
+			shipValue = ship[valueName];
 			
-			category = ship['statistics'][categoryNumber];
-			var valueList = $("<ul class = 'value-list'></ul>")
-			shipContainer.append(valueList);
+			listObject = $("<li></li>");
+			valueList.append(listObject);
 			
-			var categoryTitle = $("<p class = 'category-title'></p>");
-			categoryTitle.text(category['name']);
-			valueList.append(categoryTitle);
+			attribute = $("<attribute></attribute");
+			listObject.append(attribute);
 			
+			label = $("<label></label>")
+			label.text(valueName);
+			attribute.append(label);
 			
+			value = $("<p class = 'value'></p>");
+			value.text(shipValue)
+			attribute.append(value);
 			
-			values[categoryNumber] = [];
-			
-			for(var valueNumber = 0 ; valueNumber < category['values'].length ; valueNumber++)
-			{
-				shipValue = ship['statistics'][categoryNumber]['values'][valueNumber];
-				
-				var listObject = $("<li></li>");
-				valueList.append(listObject);
-				
-				var attribute = $("<attribute></attribute");
-				listObject.append(attribute);
-				
-				var label = $("<label></label>")
-				label.text(shipValue['name']);
-				attribute.append(label);
-				
-				var value = $("<p class = 'value'></p>");
-				attribute.append(value);
-				
-				values[categoryNumber][valueNumber] = value;
-			}
+			values.push({name:valueName, dom: value});
 		}
 		
 		
 		
 		ship.update = function()
 		{
-			for(categoryNumber = 0 ; categoryNumber < values.length ; categoryNumber++)
+			for(valueNumber = 0 ; valueNumber < values.length ; valueNumber++)
 			{
-				for(valueNumber = 0 ; valueNumber < values[categoryNumber].length ; valueNumber++)
-				{
-					values[categoryNumber][valueNumber].text(ship['statistics'][categoryNumber]['values'][valueNumber]['value']);
-				}
+				values[valueNumber].dom.text(ship[values[valueNumber].name]);
 			}
 			
 			

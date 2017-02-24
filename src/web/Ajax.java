@@ -10,15 +10,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import persistence.table.entity.User;
 import spring.Spring;
 import web.ajax.ControllerMap;
 import web.ajax.controller.RequestController;
+import web.ajax.json.JSONMarshaller;
 import web.ajax.json.JsonifyUser;
 
 @WebServlet(urlPatterns = "/Ajax")
@@ -86,7 +89,7 @@ public class Ajax extends HttpServlet
 				}
 			}
 			
-			JsonifyUser jsonify = (JsonifyUser) Spring.getAjax().getBean("JsonifyUser");
+			JSONMarshaller<HttpSession> jsonify = (JSONMarshaller<HttpSession>) Spring.getAjax().getBean("JsonifySession");
 			
 			returnObject.put("user", jsonify.marshal(request.getSession()));
 			returnObject.put("time", (new Date().toGMTString()) + " " + new Date().getTime() );
