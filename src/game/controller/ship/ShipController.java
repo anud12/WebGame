@@ -28,7 +28,7 @@ public class ShipController implements FrameIteration, ObjectController
 		
 		actions.put("remove", new TestAction());
 		actions.put("part", new PartAction());
-		actions.put("move", new MoveAction());
+		actions.put("move", new MoveActionQueue());
 		actions.put("addPart", new PartModificationAction());
 		
 		actionKeys = new LinkedList<>();

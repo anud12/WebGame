@@ -3,12 +3,13 @@ window-frame.focus.red
 	border-color:rgba(198,40,40,1);
 	box-shadow: 0px 0px 5px 1px rgba(198,40,40,0.36);
 }
+
 window-frame.red > window-title
 {
 	color:rgba(198,40,40,1);
 }
 
-window-frame.unfocus.red > window-title:hover
+window-frame.red > window-title:hover
 {
 	background-color:rgba(198,40,40,0.2);
 }

@@ -26,13 +26,12 @@ public class JsonifyUser implements JSONMarshaller<User>
 	public JSONObject marshal (User user)
 	{		
 		JSONObject wrapperObject = null;
+		wrapperObject = new JSONObject();
 		
 		JSONObject userObject = new JSONObject();
 		
 		userObject.put("increment", user.getIncrement());
-						
-		wrapperObject = new JSONObject();
-		
+				
 		wrapperObject.put("data", userObject);
 		
 		Iterator<Ship> shipsIterator = user.getShips().iterator();
@@ -46,31 +45,6 @@ public class JsonifyUser implements JSONMarshaller<User>
 		wrapperObject.put("ship", array);
 		
 		
-		return wrapperObject;
-	}
-	@SuppressWarnings("unchecked")
-	public JSONObject marshal(HttpSession session)
-	{
-		// TODO Auto-generated method stub
-		JSONObject wrapperObject = null;
-		
-		JSONObject userObject = new JSONObject();
-		
-		int userId = -1;
-		userId =  (int) session.getAttribute("user");
-		
-		if(userId != -1)
-		{
-			Persistence persistence = (Persistence) Spring.getPersistence().getBean("Persistence");
-			
-			Session dbsession = persistence.getSessionFactory().openSession();
-			
-			User user = (User) dbsession.createQuery("from User u where u.id = '" + userId + "'").getSingleResult();
-			
-			wrapperObject = this.marshal(user);
-						
-			dbsession.close();
-		}
 		return wrapperObject;
 	}
 }

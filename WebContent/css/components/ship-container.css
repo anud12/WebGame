@@ -5,13 +5,15 @@ ship-container
 
 ship-container .value-list
 {
-	margin:0px 10px -1px 10px;
+	margin:0px 0px -1px 0px;
 	padding:0px;
+	transition-duration : 1s;
+	overflow: hidden;
 }
 
 ship-container .value-list:last-of-type
 {
-	margin:0px 10px 1px 10px;
+	margin:0px 0px 1px 0px;
 }
 
 ship-container p.title
@@ -49,4 +51,9 @@ ship-container p.value
 	display:inline-block;
 	width: 49%;
 	text-align: right;
+}
+ship-list div.shipButtons
+{
+	display:flex;
+	max-width: 100%;
 }

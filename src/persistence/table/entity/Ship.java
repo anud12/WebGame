@@ -15,12 +15,14 @@ public class Ship extends GameObject
 	protected double rate;
 	protected long area;
 	protected double thrust;
+	protected double sensorRadius;
 	
 	public void calculateProperties()
 	{
 		rate = 0;
 		area = 0;
 		thrust = 0;
+		sensorRadius = 0;
 		Iterator<Part> iterator = partList.iterator();
 		while(iterator.hasNext())
 		{
@@ -38,7 +40,10 @@ public class Ship extends GameObject
 			{
 				this.thrust += ((PartEngine) part).thrust;
 			}
-			
+			if(part.getClass() == PartSensor.class)
+			{
+				this.sensorRadius += ((PartSensor) part).radius;
+			}
 		}
 		
 	}
@@ -122,5 +127,16 @@ public class Ship extends GameObject
 	{
 		this.thrust = thrust;
 	}
+
+	public double getSensorRadius()
+	{
+		return sensorRadius;
+	}
+
+	public void setSensorRadius(double sensorRadius)
+	{
+		this.sensorRadius = sensorRadius;
+	}
+	
 	
 }

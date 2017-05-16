@@ -1,7 +1,7 @@
 attribute
 {
 	display:block;
-	padding:4px;
+	padding: 5px 10px 5px 10px;
 }
 
 attribute > label
@@ -14,4 +14,6 @@ attribute > .value
 {
 	display : block;
 	text-align:center;
+	
+	
 }

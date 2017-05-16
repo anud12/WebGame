@@ -15,6 +15,7 @@
 	<link href="css/components/ul.css" rel="stylesheet">
 	<link href="css/components/attribute.css" rel="stylesheet">
 	<link href="css/components/ship-container.css" rel="stylesheet">
+	<link href="css/components/part.css" rel="stylesheet">
 	
 	<link href="css/jquery-ui/jquery-ui.css" rel="stylesheet">
 	<link href="css/jquery-ui/progressbar.css" rel="stylesheet">
@@ -96,6 +97,7 @@
 	<script src="javascript/desktopJS/taskbar.js"></script>
 	<script src="javascript/ajax/ajax.js"></script>
 	<script src="javascript/ajax/ShipManager.js"></script>
+	<script src="javascript/ajax/PartManager.js"></script>
 	<script src="javascript/Programs/userPanel.js"></script>
 	<script src="javascript/Programs/minimap.js"></script>
 	
@@ -103,6 +105,7 @@
 	<script>
 	$(function()
 	{
+		
 		userPanel.initialize($("#userPanel"));
 		ajax.init($("#ajaxResponse"));
 		ajax.setMetaDataCallback(function(data)
@@ -110,6 +113,8 @@
 			$("#ajaxResponse").html("");
 			$("#ajaxResponse").append(JSON.stringify(JSON.parse(data.message), null, "  "));
 		});
+		
+		PartManager.init();
 		
 		ShipManager.init($("#shipList"));
 		ShipManager.buildDom = function(ship, dom)
@@ -243,32 +248,45 @@
 		
 		Minimap.onClick(function(location)
 				{
-					console.log(location);
-					var returnValue = {};
-					returnValue["Input"] = {};
 					
-					returnValue["Input"]["name"] = "move";
-					returnValue["Input"]["target"] = 2 + "";
-					returnValue["Input"]["arguments"] = {};
-					returnValue["Input"]["arguments"]["x"] = location.x + "";
-					returnValue["Input"]["arguments"]["y"] = location.y + "";
-					ajax.scheduleSend(returnValue, function(){});
+					var returnArray = [];
+					var selectedShips = ShipManager.selectedShips;
+					
+					for(var i = 0 ; i < selectedShips.length ; i++)
+					{
+						var shipID = ShipManager.ships[selectedShips[i]].id;
+						var returnValue = {};
+						returnValue["Input"] = {};
+						
+						returnValue["Input"]["name"] = "move";
+						returnValue["Input"]["target"] = shipID + "";
+						returnValue["Input"]["arguments"] = {};
+						returnValue["Input"]["arguments"]["x"] = Math.round(location.x) + "";
+						returnValue["Input"]["arguments"]["y"] = Math.round(location.y) + "";
+						returnArray.push(returnValue);
+					}
+					
+					for(var i = 0 ; i < returnArray.length ; i++)
+					{
+						ajax.scheduleSend(returnArray[i], function(){});
+						console.log(returnArray[i]);
+					}
 		});
 		ShipManager.addUpdateCallback(function()
+		{
+			for(var i = 0; i < ShipManager.shipKeys.length ; i++)
 				{
-					for(var i = 0; i < ShipManager.shipKeys.length ; i++)
-						{
-							var key = ShipManager.shipKeys[i];
-							
-							var ship = ShipManager.ships[key];
-							
-							var object = {};
-							object.x = ship.x / 100;
-							object.y = ship.y / 100;
-							object.color = "green";							
-							Minimap.update(ship.name, object);
-						}
-				});
+					var key = ShipManager.shipKeys[i];
+					
+					var ship = ShipManager.ships[key];
+					
+					var object = {};
+					object.x = ship.x / 100;
+					object.y = ship.y / 100;
+					object.color = "green";							
+					Minimap.update(ship.name, object);
+				}
+		});
 	})
 	</script>
 	
@@ -280,6 +298,7 @@
 		<div id="shipList"></div>
 		<div id="shipContainers"></div>
 		<div id="minimap"></div>
+		
 	</div>
 	<div style = "">
 		<div id="ajaxResponse" style = ""></div>

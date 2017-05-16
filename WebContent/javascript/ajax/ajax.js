@@ -1,8 +1,8 @@
-var ajax = 
+ var ajax = 
 {
 	init : function()
 	{
-		var rate = 20;
+		var rate = 500;
 		ajax.url = "http://192.168.0.10:8080/HelloWorld/Ajax";
 		ajax.method = "POST";
 		ajax.ping = 0;
@@ -24,7 +24,7 @@ var ajax =
 	{
 		if(typeof(callback) == "function")
 		{
-			ajax.metaDataCallback.push(callback)
+			ajax.metaDataCallback.push(callback);
 		}
 	},
 	wait : function()

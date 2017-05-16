@@ -1,0 +1,21 @@
+part
+{
+	transition-duration: 0s;
+}
+
+part.maximized > button
+{
+	border:1px solid gray;
+	border-bottom-style: none;
+}
+part ul
+{
+	display:none;
+}
+part.maximized ul
+{
+	display: block;
+	border-top-style:none;
+	border-width: 1px;
+	
+}

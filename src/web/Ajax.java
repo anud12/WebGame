@@ -91,7 +91,7 @@ public class Ajax extends HttpServlet
 			
 			JSONMarshaller<HttpSession> jsonify = (JSONMarshaller<HttpSession>) Spring.getAjax().getBean("JsonifySession");
 			
-			returnObject.put("user", jsonify.marshal(request.getSession()));
+			returnObject.put("data", jsonify.marshal(request.getSession()));
 			returnObject.put("time", (new Date().toGMTString()) + " " + new Date().getTime() );
 			
 			response.getWriter().write(returnObject.toString());

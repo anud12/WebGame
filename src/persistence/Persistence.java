@@ -41,6 +41,14 @@ public class Persistence
 			dataContainer.get("Ship").put(ship.getId(), ship);
 		}
 		
+		List userList = session.createQuery("from User").getResultList();
+		Iterator<User> userIterator = userList.iterator();
+		while(userIterator.hasNext())
+		{
+			User user = userIterator.next();
+			dataContainer.get("User").put(user.getId(), user);
+		}
+		
 		List partList = session.createQuery("from Part").getResultList();
 		Iterator<Part>partIterator = partList.iterator();
 		while(partIterator.hasNext())

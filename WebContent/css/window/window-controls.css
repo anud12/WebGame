@@ -25,7 +25,7 @@ window-controls > *
 }
 window-frame.focus > window-controls > *
 {
-	color:black;
+	color:white;
 }
 
 window-frame.focus > window-controls > button:hover

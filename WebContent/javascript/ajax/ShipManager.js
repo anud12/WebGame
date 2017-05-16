@@ -4,12 +4,14 @@ var ShipManager =
 	init : function(dom)
 	{
 		ShipManager.dom = dom;
-		ShipManager.container = $("<container></container");
+		ShipManager.container = $("<ship-list></ship-list");
 		ShipManager.dom.append(ShipManager.container);
 		
-		ShipManager.ships = [];
+		ShipManager.ships = {};
 		ShipManager.shipKeys = [];
-		ShipManager.callbacks = [];
+		ShipManager.selectedShips = [];
+		ShipManager.updateCallbacks = [];
+		ShipManager.removeCallbacks = [];
 		
 		ajax.setMetaDataCallback(ShipManager.ajaxParse);
 	},
@@ -17,32 +19,96 @@ var ShipManager =
 	
 	ajaxParse : function(data)
 	{
+		var parsedShipKeys = []; 
 		message = JSON.parse(data['message']);
 		
-		array = message['user']['ship'];
+		array = message['data']['user']['ship'];
 		
 		for(var i = 0 ; i < array.length; i++)
 		{
-			element = array[i];
-			ShipManager.updateShip(element);
+			arrayShip = array[i];
+						
+			if(typeof(ShipManager.ships[arrayShip['name']]) == 'undefined')
+			{
+				ShipManager.createShip(arrayShip);
+			}
+			ShipManager.updateShip(arrayShip);
+			
+			parsedShipKeys.push(arrayShip['name']);
+		}
+		
+		//console.log(parsedShipKeys);
+		//console.log(ShipManager.ships);
+		
+		for(var i = 0 ; i < (ShipManager.shipKeys.length); i++)
+		{
+			if(parsedShipKeys.indexOf(ShipManager.shipKeys[i]) == -1)
+			{
+				var shipName = ShipManager.shipKeys[i];
+				ShipManager.deleteShip(ShipManager.ships[shipName]);
+				i--;
+			}
 		}
 	},
 	
-	
-	updateShip(arrayShip)
-	{
-		isNew = false;
-		if(typeof(ShipManager.ships[arrayShip['name']]) == 'undefined')
+	createShip: function (arrayShip)
+	{	
+		ShipManager.shipKeys.push(arrayShip['name']);
+		ShipManager.ships[arrayShip['name']] = {};
+		savedShip = ShipManager.ships[arrayShip['name']];
+		
+		savedShip.dom = {};
+		savedShip.update = function(){};
+		
+		container = ShipManager.container;
+		
+		//CreateButton
+		savedShip.dom.buttons = $("<div  class='shipButtons'></div>");
+		var buttonsDiv = savedShip.dom.buttons;
+		
+		var button = $("<button class='inlineButtonFill'></button>");
+		button.text(arrayShip['name']);
+		button.click(function()
 		{
-			ShipManager.shipKeys.push(arrayShip['name']);
+			var shipWindow = ShipManager.createShipDom(arrayShip)
+			savedShip.dom.window = shipWindow;
+			ShipManager.buildDom(arrayShip, shipWindow);
+		});
+		
+		var selectButton = $("<button class='inlineButton45'></button>");
+		selectButton.text("[ ]");
+		selectButton.click(function()
+		{
 			
-			ShipManager.ships[arrayShip['name']] = {};
-			ShipManager.ships[arrayShip['name']]['update'] = function(){};
-			isNew = true;
-		}
+			var selectedShips = ShipManager.selectedShips;
+			
+			if(selectedShips.indexOf(arrayShip['name']) == -1)
+			{
+				
+				selectedShips.push(arrayShip['name']);
+				selectButton.text("[X]");
+			}		
+			else
+			{
+				var index = selectedShips.indexOf(arrayShip["name"]);
+				selectedShips.splice(index, 1);
+				selectButton.text("[ ]");
+			}
+				
+			console.log(selectedShips);
+		});
+		buttonsDiv.append(button);
+		buttonsDiv.append(selectButton);
 		
+		container.append(savedShip.dom.buttons);
+		
+		ShipManager.createShipDom(arrayShip);
+	},
+	
+	updateShip : function(arrayShip)
+	{
 		var ship = ShipManager.ships[arrayShip['name']];
-		
+				
 		keys = Object.keys(arrayShip);
 		
 		for(var j = 0 ; j < keys.length ; j++)
@@ -51,103 +117,130 @@ var ShipManager =
 			ship[key] = arrayShip[key];
 		}
 		
-		ship.update();
+		ship.update(arrayShip);
 		
-		if(isNew)
+		for(var i = 0 ; i < ShipManager.updateCallbacks.length ; i++)
 		{
-			container = ShipManager.container;
-			
-			button = $("<button class='ship'></button>");
-			button.text(ship['name']);
-			button.click(function()
+			if(typeof(ShipManager.updateCallbacks[i]) != "undefined")
 			{
-				var shipWindow = ShipManager.createShipDom(ship)
-				ship['window'] = shipWindow;
-				ShipManager.buildDom(ship, shipWindow);
-			});
-			container.append(button);
-			
-			ShipManager.createShipDom(ship);
-		}
-		
-		for(var i = 0 ; i < ShipManager.callbacks.length ; i++)
-		{
-			if(typeof(ShipManager.callbacks[i]) != "undefined")
-			{
-				var action = ShipManager.callbacks[i];
+				var action = ShipManager.updateCallbacks[i];
 				action();
+				
 			}
 		}
 		
 	},
 	
+	deleteShip : function(arrayShip)
+	{		
+		var ship = arrayShip;
+		
+		//Deleting doms
+		$(ship.dom.buttons).remove();
+		$(ship.dom.window).remove();
+		
+		//Deleting from ships
+		delete(ShipManager.ships[arrayShip["name"]]);
+		
+		//Deleting from shipKeys
+		var index = ShipManager.shipKeys.indexOf(arrayShip["name"]);
+		ShipManager.shipKeys.splice(index, 1);
+		ShipManager.selectedShips.pop(arrayShip["name"]);
+		
+		console.log(ShipManager.ships);
+		console.log(ShipManager.shipKeys);
+		
+		for(var i = 0 ; i < ShipManager.removeCallbacks.length ; i++)
+		{
+			if(typeof(ShipManager.removeCallbacks[i]) != "undefined")
+			{
+				var action = ShipManager.removeCallbacks[i];
+				action();
+				
+			}
+		}
+	},
+	
 	addUpdateCallback : function(callback)
 	{
-		this.callbacks.push(callback);
+		this.updateCallbacks.push(callback);
 	},
+	addRemoveCallback : function(callback)
+	{
+		this.removeCallbacks.push(callback);
+	},
+	
 	buildDom(ship, shipWindow)
 	{
 		var window = windowManager.newWindow({windowName: ship['name'], closeable: true, height: 250, className: "green"});
 		window.content.append(shipWindow);
 		
-		console.log(ship);
 	},
 	
 	createShipDom(ship)
 	{
-		shipContainer = $("<ship-container></ship-container");
+		var savedShip = ShipManager.ships[ship['name']];
 		
-		title = $("<p class = 'title'></p>");
+		shipContainer = $("<ship-container></ship-container");
+		savedShip.dom.container = shipContainer;
+				
+		var title = $("<p class = 'title'></p>");
 		title.text(ship['name']);
 		shipContainer.append(title);
 		
-		category = "Statistics";
+		var category = "Statistics";
 		valueList = $("<ul class = 'value-list'></ul>")
 		shipContainer.append(valueList);
 		
-		categoryTitle = $("<p class = 'category-title'></p>");
+		var categoryTitle = $("<p class = 'category-title'></p>");
 		categoryTitle.text(category);
 		valueList.append(categoryTitle);
-		
-		console.log(ship);
 				
-		var values = [];
+		savedShip.dom.values = [];
 			
 		for(var valueNumber = 0 ; valueNumber < ship.keyValues.length ; valueNumber++)
 		{
-			valueName = ship.keyValues[valueNumber]
+			var valueName = ship.keyValues[valueNumber]
 			shipValue = ship[valueName];
 			
-			listObject = $("<li></li>");
+			var listObject = $("<li></li>");
 			valueList.append(listObject);
 			
-			attribute = $("<attribute></attribute");
+			var attribute = $("<attribute></attribute");
 			listObject.append(attribute);
 			
-			label = $("<label></label>")
+			var label = $("<label></label>")
 			label.text(valueName);
 			attribute.append(label);
 			
-			value = $("<p class = 'value'></p>");
+			var value = $("<p class = 'value'></p>");
 			value.text(shipValue)
 			attribute.append(value);
 			
-			values.push({name:valueName, dom: value});
+			savedShip.dom.values.push({name:valueName, dom: value});
 		}
 		
+		savedShip.dom.parts = [];
 		
-		
-		ship.update = function()
+		for(var i = 0 ; i < ship.parts.length ; i++)
 		{
-			for(valueNumber = 0 ; valueNumber < values.length ; valueNumber++)
+			var part = ship.parts[i];
+			var partDom = PartManager.buildDom(ship, part.name);
+			
+			shipContainer.append(partDom);
+		}
+		
+		ship.update = function(shipData)
+		{			
+			for(valueNumber = 0 ; valueNumber < savedShip.dom.values.length ; valueNumber++)
 			{
-				values[valueNumber].dom.text(ship[values[valueNumber].name]);
+				var value = savedShip.dom.values[valueNumber];
+				
+				value.dom.text(shipData[value.name]);
 			}
 			
-			
-			
 		}
-		ship.update();
+		ship.update(ship);
 		return shipContainer;
 	}
 }

@@ -13,18 +13,18 @@ import game.collection.GameDataContainer;
 
 public class GameContext
 {
-	protected HashMap<Object, FrameIteration> commands;
+	protected HashMap<Object, FrameIteration> gameObject;
 	protected ExecutorService executor;
 	protected GameDataContainer dataContainer;
 	
-	public HashMap<Object, FrameIteration> getCommands()
+	public HashMap<Object, FrameIteration> getObjectCommands()
 	{
-		return commands;
+		return gameObject;
 	}
 
-	public void setCommands(HashMap<Object, FrameIteration> map)
+	public void setObjectCommands(HashMap<Object, FrameIteration> map)
 	{
-		this.commands = map;
+		this.gameObject = map;
 	}
 	
 	
@@ -40,7 +40,7 @@ public class GameContext
 
 	public GameContext()
 	{
-		commands = new HashMap<Object, FrameIteration>();
+		gameObject = new HashMap<Object, FrameIteration>();
 		executor = Executors.newCachedThreadPool();
 	}
 
@@ -51,8 +51,19 @@ public class GameContext
 	
 	public void update(int deltaTimeMS)
 	{
+		updateObjects(deltaTimeMS);
+		updateUsers();
+		
+	}
+	protected void updateUsers()
+	{
+		
+	}
+	
+	protected void updateObjects(int deltaTimeMS)
+	{
 		System.out.println(this + " : Update");
-		Iterator<Object> iterator = commands.keySet().iterator();
+		Iterator<Object> iterator = gameObject.keySet().iterator();
 		
 		List<Future<FrameIteration>> frame = new ArrayList<Future<FrameIteration>>();
 		
@@ -60,7 +71,7 @@ public class GameContext
 		{
 			Object key = iterator.next();
 			
-			FrameIteration frameIteration = commands.get(key);
+			FrameIteration frameIteration = gameObject.get(key);
 			
 			frameIteration.setDeltaTimeMS(deltaTimeMS);
 			

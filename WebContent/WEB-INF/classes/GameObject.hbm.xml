@@ -20,7 +20,7 @@
 	        <bag name="partList" table="ship_part" lazy="false" cascade="merge">
 	        	<key column="id_ship" ></key>
 	        	<many-to-many  class="persistence.table.entity.Part" column="id_part" />
-	        </bag> 
+	        </bag>
     	</joined-subclass>
     </class>
 </hibernate-mapping>

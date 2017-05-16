@@ -7,6 +7,7 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean class="web.ajax.json.JsonifySession" id="JsonifySession" scope="singleton">
     	<constructor-arg ref="JsonifyUser"/>
     	<constructor-arg ref="JsonifyPart"/>
+    	<constructor-arg ref="JsonifyShip"/>
     </bean>
 
     <bean class="web.ajax.json.JsonifyUser" id="JsonifyUser" scope="singleton">

@@ -14,7 +14,7 @@ window-title
 	color:gray;
 	border-bottom:1px solid lightgray;
 }
-window-frame.unfocus > window-title:hover
+window-frame > window-title:hover
 {
 	background-color:lightgray;
 }

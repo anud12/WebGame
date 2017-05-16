@@ -24,5 +24,9 @@
 	       	<key column ="id"></key>
 	       	<property name="thrust" type="double"></property>
         </joined-subclass>
+        <joined-subclass name= "persistence.table.entity.PartSensor" table="PART_SENSOR">
+	       	<key column ="id"></key>
+	       	<property name="radius" type="double"></property>
+        </joined-subclass>
     </class>
 </hibernate-mapping>

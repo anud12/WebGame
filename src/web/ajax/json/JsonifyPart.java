@@ -4,6 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import persistence.table.entity.Part;
+import persistence.table.entity.PartEngine;
+import persistence.table.entity.PartGenerator;
+import persistence.table.entity.PartStorage;
 import persistence.table.entity.Ship;
 
 public class JsonifyPart implements JSONMarshaller<Part>
@@ -18,6 +21,7 @@ public class JsonifyPart implements JSONMarshaller<Part>
 		part.put("id", object.getId());
 		part.put("name", object.getName());
 		part.put("type", object.getType());
+		
 		
 		JSONArray keyValues = new JSONArray();
 		part.put("keyValues", keyValues);

@@ -54,7 +54,7 @@ public class ShipCollection extends BufferedHashMap<Integer, Object>
 			ShipController controller = new ShipController(dataContainer);
 			controller.setId(integer);
 			
-			gameContext.getCommands().put(ship, controller);
+			gameContext.getObjectCommands().put(ship, controller);
 			controllers.put(shipObject.getId(), controller);
 			
 			return returnShip;

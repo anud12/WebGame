@@ -1,43 +1,52 @@
-var panelManager = 
+class Panel
 {
-	
-	setParent : function(dom)
+	constructor()
 	{
-		var bottom = $("<panel-container></panel-container>");
-		/*
-		bottom.addClass("bottom");
-		dom.prepend(bottom);
-		panelManager.bottomContainer = bottom;
-		*/
-		var left = $("<panel-container></panel-container>");
-		left.addClass("left");
-		dom.prepend(left);
-		panelManager.leftContainer = left;
-	},
-	
-	createPanel : function(location)
-	{
-		var panel = $("<panel></panel>");
+		//CreateDoms
+		this.dom = $("<panel-container></panel-container>");
+		this.panel = $("<panel></panel");
 		
-		switch(location)
-		{
-			case panelManager.location.bottom:
-			{
-				panelManager.bottomContainer.append(panel);
-				break;	
-			}
-			case panelManager.location.left:
-			{
-				panelManager.leftContainer.append(panel);
-				break;
-			}
-		}
+		this.rightPanel = $("<rightPanel></rightPanel>");
 		
-		return panel;
-	},
+		//MergeDoms
+		this.dom.append(this.panel);
+		this.dom.append(this.rightPanel);
+		
+		this.rightPanel.append($("<button>TEST</button>"));
 
-	location : {
-		bottom:"bottom",
-		left:"left"
+		//Create metadata containers
+		this.buttonList = {};
 	}
+
+	/* Arguments 
+	* label
+	* id
+	* className
+	*/
+
+	
+	createButton(args)
+	{
+		var dom = $("<button></button>");
+		dom.text(args.label);
+		
+		var ButtonObject = new PanelButton(args.id,dom);
+		
+		ButtonObject.dom.toggleClass(args.className)
+		
+		ButtonObject.id = args.id;
+		ButtonObject.dom = dom;
+		
+		this.panel.append(dom);
+		
+		this.buttonList[args.id] = ButtonObject;
+		
+		console.log(this.buttonList);
+		return ButtonObject;
+	}
+	getButton(id)
+	{
+		return this.buttonList[args.id];
+	}
+	
 }

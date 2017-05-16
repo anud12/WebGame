@@ -15,6 +15,7 @@
 	<link href="css/components/ul.css" rel="stylesheet">
 	<link href="css/components/attribute.css" rel="stylesheet">
 	<link href="css/components/ship-container.css" rel="stylesheet">
+	<link href="css/components/part.css" rel="stylesheet">
 	
 	<link href="css/jquery-ui/jquery-ui.css" rel="stylesheet">
 	<link href="css/jquery-ui/progressbar.css" rel="stylesheet">
@@ -32,6 +33,7 @@
 	
 	<link href="css/panel/panel.css" rel="stylesheet">
 	<link href="css/panel/panelContainer.css" rel="stylesheet">
+	<link href="css/panel/rightPanel.css" rel="stylesheet">
 	
 	<link href="css/window-manager.css" rel="stylesheet">
 	<link href="css/desktop.css" rel="stylesheet">
@@ -54,23 +56,25 @@
 	<title>Index</title>
 </head>
 
-<body>
-
 	<script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
 	<script src="jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 	<script src="javascript/desktopJS/windowManager.js"></script>
+	<script src="javascript/desktopJS/window.js"></script>
+	<script src="javascript/desktopJS/panelButton.js"></script>
 	<script src="javascript/desktopJS/taskbar.js"></script>
 	<script src="javascript/ajax/ajax.js"></script>
 	<script src="javascript/ajax/ShipManager.js"></script>
+	<script src="javascript/ajax/PartManager.js"></script>
 	<script src="javascript/Programs/userPanel.js"></script>
+	<script src="javascript/Programs/minimap.js"></script>
 	<script src="javascript/testing.js"></script>
 	
 	
 	<script>
 	
 	</script>
-	<window-manager>
-		<desktop>
-		</desktop>
-	</windowManager>
+
+<body>
+
+
 </body>

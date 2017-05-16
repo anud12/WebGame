@@ -1,161 +1,101 @@
-var windowManager = 
+class WindowManager
 {
-	initialize : function(desktop, panel)
+	constructor()
 	{
-		windowManager.desktop = desktop;
-		windowManager.panel = panel;
-	},
-
+		this.dom = $("<window-manager></window-manager>");
+		this.panel = new Panel();
+		this.desktop = $("<desktop></desktop>")
+		//MergeDoms
+		this.dom.append(this.panel.dom);
+		this.dom.append(this.desktop);
 		
-	newWindow : function (arg)
-	{
-		
-	    //Create doms
-	    var dom = $("<window-frame></window-frame>");
-	    var title = $("<window-title></window-title>");
-	    var windowControls = $("<window-controls></window-controls>");
-	    
-	    var minimize = $("<button>_</button>");
-	    var close = $("<button>X</button>");
-	    
-	    var windowDom = $("<window></window>");
-	    var menuBar = $("<menu-bar></menu-bar>");
-	    var contentContainer = $("<content-container></content-container>");
-	    var content = $("<content></content>");
-	    var sideButton = $("<button></button>");
-	    
-	    //Create return object
-	    var returnWindow = {};
-	    returnWindow.dom = dom;
-	    returnWindow.title = title;
-	    returnWindow.windowControls = windowControls;
-	    returnWindow.minimize = minimize;
-	    returnWindow.windowDom = windowDom;
-	    returnWindow.menuBar = menuBar;
-	    returnWindow.contentContainer = contentContainer;
-	    returnWindow.content = content;
-	    returnWindow.sideButton = sideButton;
-	    returnWindow.close = close;
-	    
-	    //Insert doms
-	    dom.append(title);
-	    dom.append(windowControls);
-	    dom.append(windowDom);
-	    windowDom.append(menuBar);
-	    contentContainer.append(content);
-	    windowDom.append(contentContainer);
-	    
-	    windowControls.append(minimize);
-	    
-	    if(arg.closeable)
-	    	windowControls.append(close);
-	    
-	    windowManager.desktop.append(dom);
-	    windowManager.panel.append(sideButton);
-	    
-	    //Configure doms events
-	    $(dom).draggable( {
-	    	containment: "desktop",
-	    	scroll: false,
-	    	handle:title,
-	    });
-	    
-	    $(dom).resizable( {
-	    	containment: "desktop",
-	    	handles: " n, e, s, w, ne, se, sw, nw",
-	    	resize : function(event, ui)
-	    	{
-	    		if(ui.size.width < "250")
-    			{
-	    			dom.addClass("mobile");
-    			}
-	    		else
-	    		{
-	    			dom.removeClass("mobile");
-	    		}
-	    	}
-	    });
-	    if(typeof(arg.width) != "undefined")
-	    	$(dom).width(arg.width);
-	    else
-	    	$(dom).width(200);
-	    
-	    if(typeof(arg.height) != "undefined")
-	    	$(dom).height(arg.height);
-	    else
-	    	$(dom).height(100);
-	    
-	    //Add classes
-	    title.text(arg.windowName);
-	    sideButton.text(arg.windowName);
-	    $(dom).addClass("unfocus");
-	    if(typeof(arg.className) != "undefined")
-	    	$(dom).addClass(arg.className);
-	    
-	    sideButton.addClass("visible");
-	    sideButton.addClass(arg.className);
-	    
-	    $(title).click(function(event)
-	    {
-	    	windowManager.focus(dom,sideButton,event);
-	    })
-	    $(dom).click(function(event)
-		{
-	    	windowManager.focus(dom,sideButton,event);
-		});
-	    minimize.click(function()
-	    {
-	    	windowManager.hideWindow(dom,sideButton);
-	    });
-	    close.click(function()
-	    {
-	    	windowManager.closeWindow(dom,sideButton);
-	    });
-	    sideButton.click(function()
-	    {
-	    	windowManager.showWindow(dom,sideButton);
-	    });
-	    
-	    return returnWindow;
-	},
-	focus : function (dom,button,event)
-	{
-		
-		if(!dom.hasClass("focus"))
-		{
-			//Save states
-			var scrollLocation = $(dom).find("content-container").scrollTop();
-			
-			//Modify dom
-			$("window-frame.focus").addClass("unfocus");
-			$("window-frame.focus").removeClass("focus");
-			$(dom).addClass("focus");
-			$(dom).removeClass("unfocus");
-			
-			$("panel > .focus").removeClass("focus");
-			$(button).addClass("focus");
-			$(dom).appendTo("desktop");
-			
-			//Apply saved states
-			$(dom).find("content-container").scrollTop(scrollLocation);
-		}
-	},
-
-	showWindow : function (domIdentifier, button)
-	{
-	    $(domIdentifier).show();
-	    $(button).addClass("visible");
-	    windowManager.focus(domIdentifier,button);
-	},
-	hideWindow : function (domIdentifier, button)
-	{
-	    $(domIdentifier).hide();
-	    $(button).removeClass("visible");
-	    button.removeClass("focus");
-	},
-	closeWindow : function (domIdentifier, button)
-	{
-		$(domIdentifier).remove();
-		$(button).remove();
+		//Create metadata container
+		this.windowList = {};
+		this.windowList.insertIndex = 0;
+		this.focusID = -1;
 	}
+	
+	/*Arguments
+	 * height : number
+	 * width : number
+	 * title : string
+	 * closeable : boolean
+	 * className : string
+	 * id : number | optional
+	*/
+	
+	newWindow(args)
+	{
+		var thisObject = this;
+		
+		//Create metadata
+		if(typeof(args.id) == "undefined")
+		{
+			args.id = this.windowList.insertIndex;
+			this.windowList.insertIndex++;
+		}
+		
+		//Create doms
+		args.containedDom = this.desktop;
+		var window = new Window(args);
+		var buttonArguments = 
+		{
+			label : args.title,
+			id : args.id,
+			className : args.className
+		}
+		var panelButton = this.panel.createButton(buttonArguments);
+		
+		//Merge Doms
+		this.desktop.append(window.dom);
+		
+		//Store metadata
+		this.windowList[args.id] = {
+				window : window,
+				panelButton : panelButton
+		};
+		
+		
+		//Add events
+		window.onCloseButton(function(window)
+		{
+			console.log("HI HI!" + window.title.text());
+		})
+		window.onFrameClick(function(window)
+		{
+			thisObject.focus(window.id);
+		})
+		console.log(panelButton);
+		panelButton.onClick(function(buttonObject)
+		{
+			thisObject.focus(buttonObject.id)
+		})
+		
+		return window;
+	}
+	
+	focus(id)
+	{
+		if(this.focusID == id)
+		{
+			return;
+		}
+		
+		var windowData = this.windowList[id];
+		
+		this.desktop.append(windowData.window.dom);
+		
+		windowData.window.dom.toggleClass("focus");
+		windowData.panelButton.dom.toggleClass("focus");
+		
+		if(this.focusID != -1)
+		{
+			var previousWindow = this.windowList[this.focusID];
+			previousWindow.window.dom.toggleClass("focus");
+			previousWindow.panelButton.dom.toggleClass("focus");
+		}
+		
+		this.focusID = id;
+	}
+	
 }

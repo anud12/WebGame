@@ -9,7 +9,7 @@ window-frame.green > window-title
 	color:rgba(46,125,50,1);
 }
 
-window-frame.unfocus.green > window-title:hover
+window-frame.green > window-title:hover
 {
 	background-color:rgba(46,125,50,0.2);
 }

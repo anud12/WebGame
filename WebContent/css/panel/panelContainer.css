@@ -1,7 +1,10 @@
 panel-container
 {
 	position:relative;
-	
+	width:100%;
+	display:flex;
+	height: 35px;
+	margin-bottom: 16px;
 }
 
 panel-container.bottom
@@ -33,5 +36,15 @@ panel-container.left > panel
 	border-right-width:1px;
 }
 
-
+panel-container button {
+	transition-duration: 0.2s;
+	background-color: inherit;
+	
+	border-right: 0px solid;
+	border-bottom: 0px solid;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	border-color:transparent;
+	white-space: nowrap;
+}
 

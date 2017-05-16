@@ -1,0 +1,64 @@
+rightPanel {
+	background-color: white;
+	border-color: lightgray;
+	border-style: solid;
+	border-width:0px;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	
+	border-bottom-width : 1.5px;
+
+	/*Flex layout*/
+	display: flex;
+	flex-grow: 1;
+	flex-direction: row-reverse;
+
+	padding-bottom: 50px;
+}
+
+
+
+
+rightPanel button.visible {
+	border-color: gray;
+}
+
+rightPanel button.focus {
+	background-color: gray;
+	color: white;
+}
+
+rightPanel button.focus:hover {
+	background-color: gray;
+}
+
+rightPanel button:hover {
+	background-color: rgba(125, 125, 125, 0.1);
+	background-color: lightgray;
+}
+
+panel-container > rightPanel button
+{
+	display: inline;
+	height:100%;
+	padding: 10px 10px 10px 10px;
+	width:auto;
+	border-bottom-width : 3.5px;
+}
+
+panel-container.left > rightPanel button
+{
+	border-right-width: 3.5px;
+	display: block;
+	width: 100%;
+	padding: 10px 0px 10px 0px;
+}
+
+panel-container.bottom > rightPanel button
+{
+	display: inline;
+	height:100%;
+	padding: 10px 10px 10px 10px;
+	width:auto;
+	border-top-width : 3.5px;
+}
